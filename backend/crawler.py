@@ -66,7 +66,7 @@ for column in book_columns:
                         paragraph = story_page.find_all('p')
                         story_page = ' '.join(item.text for item in paragraph)
                         story_text += story_page
-                        print(story_page)
+                        
                         text_file = open(new_directory_path + '/' + story_title[0] + '.txt', 'w+', encoding='utf-8')
                         text_file.write(str(story_text))
                         text_file.close()
