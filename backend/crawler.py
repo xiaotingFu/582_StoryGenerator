@@ -29,7 +29,7 @@ for column in book_columns:
                 books_header = soup3.find('div', id='content_wrapper_inner')
                 book_names = books_header.find_all('a')
 
-                new_directory_path = book_names[0].text + "_" + book_names[1].text
+                new_directory_path = book_names[0].text.replace(' ', '_') + "_" + book_names[1].text.replace(' ', '_')
 
                 try:
                     os.mkdir(new_directory_path)
@@ -60,11 +60,15 @@ for column in book_columns:
                         story_page = requests.get(site_path + story_link)
                         soup4 = BeautifulSoup(story_page.content, 'html.parser')
 
-                        story_page = soup4.find('div', id='storytext').text
-                        story_text += story_page
 
-                        text_file = open(new_directory_path + '/' + story_title[0] + '.txt', 'w+')
-                        text_file.write(str(story_text.encode('utf-8')))
+                        story_page = soup4.find('div', id='storytext')
+
+                        paragraph = story_page.find_all('p')
+                        story_page = ' '.join(item.text for item in paragraph)
+                        story_text += story_page
+                        print(story_page)
+                        text_file = open(new_directory_path + '/' + story_title[0] + '.txt', 'w+', encoding='utf-8')
+                        text_file.write(str(story_text))
                         text_file.close()
 
                     if counter == 1:
