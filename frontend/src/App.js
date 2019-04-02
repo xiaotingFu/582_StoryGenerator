@@ -5,6 +5,8 @@ import Modal from "./components/Modal";
 import CustomNavbar from "./components/CustomNavbar";
 import CustomStepper from "./components/CustomStepper";
 import Search from "./components/Search";
+import Setting from "./components/Setting";
+import Story from "./components/Story";
 import axios from "axios";
 
 class App extends Component {
@@ -36,10 +38,10 @@ class App extends Component {
                 <Search></Search>
             </div>
             <div className="card p-3">
-              Settings
+              <Setting></Setting>
             </div>
             <div className="card p-3">
-              Generated Crossover
+              <Story></Story>
             </div>
           </div>
         </div>
