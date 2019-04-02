@@ -6,6 +6,10 @@ name = "pypi"
 [packages]
 django = "*"
 django-cors-headers = "*"
+textgenrnn = "*"
+tensorflow = "*"
+os = "*"
+requests = "*"
 
 [dev-packages]
 
