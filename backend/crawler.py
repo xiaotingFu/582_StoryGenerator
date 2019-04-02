@@ -4,6 +4,7 @@ import requests
 from bs4 import BeautifulSoup
 import json
 from google.cloud import firestore
+from langdetect import detect
 
 
 # Project ID is determined by the GCLOUD_PROJECT environment variable
@@ -95,16 +96,22 @@ for first_book_column in book_columns:
                                 story_page = ' '.join(item.text for item in paragraph)
                                 story_text += story_page
 
-                            # insert a record into the firebase db
-                            story_data = {
-                                u"title":  u'{}'.format(story_title),
-                                u"book1": u'{}'.format(book_names[0]),
-                                u"book2": u'{}'.format(book_names[1]),
-                                u"content": u'{}'.format(story_text)
-                            }
-                            c = db.collection(u'fictions')
-                            d = c.document(u'crossovers')
-                            d.collection(u'{}'.format(crossover_category)).document(u'{}'.format(story_title)).set(story_data)
+                            if len(story_text) > 0:
+                                lang = detect(story_text)
+                            else:
+                                lang = 'null'
+
+                            if lang == 'en':
+                                # insert a record into the firebase db
+                                story_data = {
+                                    u"title":  u'{}'.format(story_title),
+                                    u"book1": u'{}'.format(book_names[0]),
+                                    u"book2": u'{}'.format(book_names[1]),
+                                    u"content": u'{}'.format(story_text)
+                                }
+                                c = db.collection(u'fictions')
+                                d = c.document(u'crossovers')
+                                d.collection(u'{}'.format(crossover_category)).document(u'{}'.format(story_title)).set(story_data)
 
                             # with open(story_path, 'a+', encoding='utf-8') as f:
                             #     f.write(story_text)
