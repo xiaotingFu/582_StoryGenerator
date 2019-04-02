@@ -3,12 +3,19 @@ import codecs
 import requests
 from bs4 import BeautifulSoup
 import json
+from google.cloud import firestore
+
+
+# Project ID is determined by the GCLOUD_PROJECT environment variable
+
+# Inistalize firestore client
+db = firestore.Client()
 
 counter = 1
-
 site_path = "https://www.fanfiction.net"
 book_list_page = requests.get(site_path + "/crossovers/book/")
 soup = BeautifulSoup(book_list_page.content, 'html.parser')
+
 
 book_columns = soup.find_all('td', valign='TOP')
 for first_book_column in book_columns:
@@ -31,18 +38,21 @@ for first_book_column in book_columns:
                 books_header = soup3.find('div', id='content_wrapper_inner')
                 book_names = books_header.find_all('a')
                 if book_names:
+                    book1 = book_names[0].text.replace(' ', ' ')
+                    book2 = book_names[1].text.replace(' ', ' ')
+                    print(book1, book2)
                     crossover_category = book_names[0].text.replace(' ', '_') + "_and_" + book_names[1].text.replace(' ', '_')
 
-                    new_directory_path = '../data/' + crossover_category
+                    # new_directory_path = '../data/' + crossover_category
 
-                    try:
-                        os.mkdir(new_directory_path)
-                    except OSError:
-                        print("Creation of the directory %s failed" % new_directory_path)
-
-                        break
-                    else:
-                        print("Successfully created the directory %s " % new_directory_path)
+                    # try:
+                    #     os.mkdir(new_directory_path)
+                    # except OSError:
+                    #     print("Creation of the directory %s failed" % new_directory_path)
+                    #
+                    #     break
+                    # else:
+                    #     print("Successfully created the directory %s " % new_directory_path)
                     print("Crawling category%s " % crossover_category)
                     list_of_stories = soup3.find_all('div', class_='z-list')
                     for story in list_of_stories:
@@ -56,7 +66,7 @@ for first_book_column in book_columns:
                         if len(story_title) <= 100:
                             print("- Crawling story %s" % story_title)
                             story_text = ""
-                            story_path = new_directory_path + '/' + story_title + ".txt"
+                            # story_path = new_directory_path + '/' + story_title + ".txt"
 
                             if soup4.find('select', id='chap_select'):
                                 chapters = soup4.find('select', id='chap_select').find_all('option')
@@ -85,25 +95,18 @@ for first_book_column in book_columns:
                                 story_page = ' '.join(item.text for item in paragraph)
                                 story_text += story_page
 
-                            with open(story_path, 'a+', encoding='utf-8') as f:
-                                f.write(story_text)
-                    print("debug here")
-                # # Write records to JSON File
-                # crossover_data = {
-                #     crossover_category: extracted_crossovers
-                # }
+                            # insert a record into the firebase db
+                            story_data = {
+                                u"title":  u'{}'.format(story_title),
+                                u"book1": u'{}'.format(book_names[0]),
+                                u"book2": u'{}'.format(book_names[1]),
+                                u"content": u'{}'.format(story_text)
+                            }
+                            c = db.collection(u'fictions')
+                            d = c.document(u'crossovers')
+                            d.collection(u'{}'.format(crossover_category)).document(u'{}'.format(story_title)).set(story_data)
 
-            #                 if counter == 1:
-            #                     break
-            #
-            #             if counter == 1:
-            #                 break
-            #
-            #         if counter == 1:
-            #             break
-            #
-            #     if counter == 1:
-            #         break
-            # if counter == 1:
-            #     break
+                            # with open(story_path, 'a+', encoding='utf-8') as f:
+                            #     f.write(story_text)
+
 
