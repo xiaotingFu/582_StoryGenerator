@@ -42,7 +42,6 @@ class CustomStepper extends React.Component {
   render() {
     const { classes } = this.props;
     const steps = getSteps();
-    const { activeStep } = this.state;
 
     return (
       <div className={classes.root}>

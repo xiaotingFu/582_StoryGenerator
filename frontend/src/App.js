@@ -7,7 +7,7 @@ import CustomStepper from "./components/CustomStepper";
 import Search from "./components/Search";
 import Setting from "./components/Setting";
 import Story from "./components/Story";
-import axios from "axios";
+import { Row, Col, Card, CardBody } from 'reactstrap';
 
 class App extends Component {
   constructor(props) {
@@ -22,6 +22,10 @@ class App extends Component {
 
   }
 
+  componentDidUpdate() {
+    console.log(this.state);
+  }
+
   changeActiveStep(activeStep) {
     this.setState({activeStep});
   }
@@ -30,13 +34,10 @@ class App extends Component {
     switch (step) {
       case 0:
         return <Search changeActiveStep={step=>this.changeActiveStep(step)}></Search>;
-        break;
       case 1:
         return <Setting changeActiveStep={step=>this.changeActiveStep(step)}></Setting>;
-        break;
       case 2:
         return <Story changeActiveStep={step=>this.changeActiveStep(step)}></Story>;
-        break;
       default:
         break;
     }
@@ -55,20 +56,15 @@ class App extends Component {
         <CustomStepper activeStep={this.state.activeStep} 
           changeActiveStep={step=>this.changeActiveStep(step)}>
         </CustomStepper>
-        <div className="container">
-          {/* <div className="col-md-6 col-sm-10 mx-auto p-0"> */}
-            <div className="card h-100 p-3" style={{height: "100%"}}>
-                {this.renderByActiveStep(this.state.activeStep)}
-            {/* </div> */}
-          </div>
-        </div>
-        {this.state.modal ? (
-          <Modal
-            activeItem={this.state.activeItem}
-            toggle={this.toggle}
-            onSave={this.handleSubmit}
-          />
-        ) : null}
+        <Row>
+          <Col sm="1"></Col>
+          <Col sm="10">
+            <Card className="h-100 p-3">
+              {this.renderByActiveStep(this.state.activeStep)}
+            </Card>
+          </Col>
+          <Col sm="1"></Col>
+        </Row>
       </main>
     );
   }

@@ -48,14 +48,6 @@ export default class CustomNavbar extends React.Component {
               <NavItem>
                 <NavLink href="https://github.com">GitHub</NavLink>
               </NavItem>
-              <UncontrolledDropdown nav inNavbar>
-                <DropdownToggle nav caret>
-                  Story Cart
-                </DropdownToggle>
-                <DropdownMenu right>
-                  {this.displayStoryCart()}
-                </DropdownMenu>
-              </UncontrolledDropdown>
             </Nav>
           </Collapse>
         </Navbar>
