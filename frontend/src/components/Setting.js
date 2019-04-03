@@ -19,12 +19,22 @@ export default class Setting extends React.Component {
           </FormGroup>
           <div style={{textAlign: "center"}}>
             <Button type="button" 
+                    onClick = {() => this.props.changeActiveStep(2)}
                     className="btn"
                     style={{width: "20%",
                             position: "absolute",
                             bottom: "0",
-                            left: "40%"}}>
+                            left: "20%"}}>
               Submit
+            </Button>
+            <Button type="button" 
+                    onClick = {() => this.props.changeActiveStep(0)}
+                    className="btn"
+                    style={{width: "20%",
+                            position: "absolute",
+                            bottom: "0",
+                            right: "20%"}}>
+              Cancel
             </Button>
           </div>
         </Form>

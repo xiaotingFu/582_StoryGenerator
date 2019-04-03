@@ -13,12 +13,33 @@ class App extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      query: '',
+      query: "",
+      activeStep: 0,
     };
   }
 
   componentDidMount() {
 
+  }
+
+  changeActiveStep(activeStep) {
+    this.setState({activeStep});
+  }
+
+  renderByActiveStep(step) {
+    switch (step) {
+      case 0:
+        return <Search changeActiveStep={step=>this.changeActiveStep(step)}></Search>;
+        break;
+      case 1:
+        return <Setting changeActiveStep={step=>this.changeActiveStep(step)}></Setting>;
+        break;
+      case 2:
+        return <Story changeActiveStep={step=>this.changeActiveStep(step)}></Story>;
+        break;
+      default:
+        break;
+    }
   }
 
   handleInputChange = () => {
@@ -31,18 +52,14 @@ class App extends Component {
     return (
       <main className="content">
         <CustomNavbar></CustomNavbar>
-        <CustomStepper></CustomStepper>
-        <div className="row ">
-          <div className="col-md-6 col-sm-10 mx-auto p-0">
-            <div className="card p-3">
-                <Search></Search>
-            </div>
-            <div className="card p-3">
-              <Setting></Setting>
-            </div>
-            <div className="card p-3">
-              <Story></Story>
-            </div>
+        <CustomStepper activeStep={this.state.activeStep} 
+          changeActiveStep={step=>this.changeActiveStep(step)}>
+        </CustomStepper>
+        <div className="container">
+          {/* <div className="col-md-6 col-sm-10 mx-auto p-0"> */}
+            <div className="card h-100 p-3" style={{height: "100%"}}>
+                {this.renderByActiveStep(this.state.activeStep)}
+            {/* </div> */}
           </div>
         </div>
         {this.state.modal ? (

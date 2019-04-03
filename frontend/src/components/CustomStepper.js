@@ -4,8 +4,6 @@ import { withStyles } from '@material-ui/core/styles';
 import Stepper from '@material-ui/core/Stepper';
 import Step from '@material-ui/core/Step';
 import StepLabel from '@material-ui/core/StepLabel';
-import Button from '@material-ui/core/Button';
-import Typography from '@material-ui/core/Typography';
 
 const styles = theme => ({
   instructions: {
@@ -18,37 +16,14 @@ function getSteps() {
   return ['Select original novels', 'Adjust your settings', 'Get your own story!'];
 }
 
-function getStepContent(step) {
-  switch (step) {
-    case 0:
-      return 'Search and select novels you want to use';
-    case 1:
-      return 'Configure your own settings';
-    case 2:
-      return 'Generate your own story';
-    default:
-      return 'Unknown step';
-  }
-}
-
 class CustomStepper extends React.Component {
   state = {
     activeStep: 0,
-    skipped: new Set(),
   };
 
-  isStepOptional = step => step === 1;
-
   handleNext = () => {
-    const { activeStep } = this.state;
-    let { skipped } = this.state;
-    if (this.isStepSkipped(activeStep)) {
-      skipped = new Set(skipped.values());
-      skipped.delete(activeStep);
-    }
     this.setState({
-      activeStep: activeStep + 1,
-      skipped,
+      activeStep: this.state.activeStep + 1,
     });
   };
 
@@ -58,33 +33,11 @@ class CustomStepper extends React.Component {
     }));
   };
 
-  handleSkip = () => {
-    const { activeStep } = this.state;
-    if (!this.isStepOptional(activeStep)) {
-      // You probably want to guard against something like this,
-      // it should never occur unless someone's actively trying to break something.
-      throw new Error("You can't skip a step that isn't optional.");
-    }
-
-    this.setState(state => {
-      const skipped = new Set(state.skipped.values());
-      skipped.add(activeStep);
-      return {
-        activeStep: state.activeStep + 1,
-        skipped,
-      };
-    });
-  };
-
   handleReset = () => {
     this.setState({
       activeStep: 0,
     });
   };
-
-  isStepSkipped(step) {
-    return this.state.skipped.has(step);
-  }
 
   render() {
     const { classes } = this.props;
@@ -93,19 +46,15 @@ class CustomStepper extends React.Component {
 
     return (
       <div className={classes.root}>
-        <Stepper activeStep={activeStep}>
+        <Stepper activeStep={this.props.activeStep}>
           {steps.map((label, index) => {
-            const props = {};
-            const labelProps = {};
-            if (this.isStepOptional(index)) {
-              labelProps.optional = <Typography variant="caption">Optional</Typography>;
-            }
-            if (this.isStepSkipped(index)) {
-              props.completed = false;
-            }
             return (
-              <Step key={label} {...props}>
-                <StepLabel {...labelProps}>{label}</StepLabel>
+              <Step key={label} onClick={() => {this.setState({
+                    activeStep: index,
+                  });
+                  this.props.changeActiveStep(index);
+                }}>
+                <StepLabel>{label}</StepLabel>
               </Step>
             );
           })}

@@ -205,20 +205,13 @@ class Search extends React.Component {
         </NoSsr>
         <div style={{textAlign: "center"}}>
           <button type="button" 
+                  onClick = {() => this.props.changeActiveStep(1)}
                   className="btn btn-primary btn-lg btn-block"
                   style={{width: "20%",
                           position: "absolute",
-                          left: "25%",
+                          left: "40%",
                           marginTop: "30px"}}>
             Submit
-          </button>
-          <button type="button" 
-                  className="btn btn-secondary btn-lg btn-block"
-                  style={{width: "20%",
-                          position: "absolute",
-                          right: "25%",
-                          marginTop: "30px"}}>
-            Clear
           </button>
         </div>
       </div>
