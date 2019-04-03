@@ -2,15 +2,42 @@ import os
 import codecs
 import requests
 from bs4 import BeautifulSoup
-import json
-from google.cloud import firestore
+from google.cloud import storage
 from langdetect import detect
+import six
+
+PROJECT_ID = 'mongodb-236418'
+CLOUD_STORAGE_BUCKET = 'fiction_db'
+def _get_storage_client():
+    return storage.Client(
+        project=PROJECT_ID)
 
 
-# Project ID is determined by the GCLOUD_PROJECT environment variable
 
 # Inistalize firestore client
-db = firestore.Client()
+
+
+# [START upload_file]
+def upload_file(file_stream, foldername, filename, content_type):
+    """
+    Uploads a file to a given Cloud Storage bucket and returns the public url
+    to the new object.
+    """
+
+    client = _get_storage_client()
+    bucket = client.bucket(CLOUD_STORAGE_BUCKET)
+    print('{}/'.format(foldername) + filename)
+    blob = bucket.blob('{}/'.format(foldername) + filename)
+
+    blob.upload_from_string(
+        file_stream,
+        content_type=content_type)
+
+    url = blob.public_url
+
+    if isinstance(url, six.binary_type):
+        url = url.decode('utf-8')
+    return url
 
 counter = 1
 site_path = "https://www.fanfiction.net"
@@ -103,15 +130,17 @@ for first_book_column in book_columns:
 
                             if lang == 'en':
                                 # insert a record into the firebase db
-                                story_data = {
-                                    u"title":  u'{}'.format(story_title),
-                                    u"book1": u'{}'.format(book_names[0]),
-                                    u"book2": u'{}'.format(book_names[1]),
-                                    u"content": u'{}'.format(story_text)
-                                }
-                                c = db.collection(u'fictions')
-                                d = c.document(u'crossovers')
-                                d.collection(u'{}'.format(crossover_category)).document(u'{}'.format(story_title)).set(story_data)
+                                # story_data = {
+                                #     u"title":  u'{}'.format(story_title),
+                                #     u"book1": u'{}'.format(book1),
+                                #     u"book2": u'{}'.format(book2),
+                                #     u"content": u'{}'.format(story_text)
+                                # }
+                                # upload upload_file
+                                upload_file(story_text,crossover_category, story_title,'text/plain')
+                                # c = db.collection(u'fictions')
+                                # d = c.document(u'crossovers')
+                                # d.collection(u'{}'.format(crossover_category)).document(u'{}'.format(story_title)).set(story_data)
 
                             # with open(story_path, 'a+', encoding='utf-8') as f:
                             #     f.write(story_text)
