@@ -6,13 +6,38 @@ export default class Setting extends React.Component {
     return (
       <Form>
         <FormGroup>
-          <Label for="exampleEmail">Setting 1</Label>
-          <Input type="email" name="email" id="exampleEmail" placeholder="with a placeholder" />
+          <Row form>
+            <Col md={6}>
+              <Label for="romanceRating">Romance Rating</Label>
+              <Input type="range" name="romance" id="romanceRating"/>
+            </Col>
+            <Col md={6}>
+              <Label for="horrorRating">Horror Rating</Label>
+              <Input type="range" name="horror" id="horrorRating"/>
+            </Col>
+          </Row>
         </FormGroup>
         <FormGroup>
-          <Label for="examplePassword">Setting 2</Label>
-          <Input type="password" name="password" id="examplePassword" placeholder="password placeholder" />
+          <Row form>
+            <Col md={6}>
+              <Label for="clicheRating">Cliche Rating</Label>
+              <Input type="range" name="cliche" id="clicheRating"/>
+            </Col>
+            <Col md={6}>
+              <Label for="violenceRating">Violence Rating</Label>
+              <Input type="range" name="violence" id="violenceRating"/>
+            </Col>
+          </Row>
         </FormGroup>
+        <FormGroup>
+          <Row form>
+            <Col md={6}>
+              <Label for="boringRating">Boring Rating</Label>
+              <Input type="range" name="boring" id="boringRating"/>
+            </Col>
+          </Row>
+        </FormGroup>
+        <FormGroup>
           <Row>
             <Col sm="3"></Col>
             <Col sm="2">
@@ -33,6 +58,7 @@ export default class Setting extends React.Component {
             </Col>
             <Col sm="3"></Col>
           </Row>
+          </FormGroup>
       </Form>
     );
   }

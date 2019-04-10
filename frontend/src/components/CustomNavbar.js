@@ -46,7 +46,7 @@ export default class CustomNavbar extends React.Component {
           <Collapse isOpen={this.state.isOpen} navbar>
             <Nav className="ml-auto" navbar>
               <NavItem>
-                <NavLink href="https://github.com">GitHub</NavLink>
+                <NavLink target="_blank" href="https://github.com/feelbergood/CSC540Project">GitHub</NavLink>
               </NavItem>
             </Nav>
           </Collapse>
