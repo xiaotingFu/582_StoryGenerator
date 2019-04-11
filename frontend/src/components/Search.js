@@ -12,13 +12,14 @@ import Paper from '@material-ui/core/Paper';
 import Chip from '@material-ui/core/Chip';
 import MenuItem from '@material-ui/core/MenuItem';
 import { books } from '../books';
+import TitlebarGridList from './TitlebarGridList';
 import { emphasize } from '@material-ui/core/styles/colorManipulator';
 import { Row, Col, Form, FormGroup } from 'reactstrap';
 
 const suggestions = books.map(book => ({
-  value: book.title,
+  author: book.author,
   label: book.title,
-  imgLink: book.imageLink,
+  imgLink: process.env.PUBLIC_URL+book.imageLink,
 }));
 
 const styles = theme => ({
@@ -182,8 +183,8 @@ class Search extends React.Component {
       [name]: value,
     });
     if (this.state.multi&&this.state.multi.length===2) {
-      this.setState({src1: process.env.PUBLIC_URL+this.state.multi[0].imgLink});
-      this.setState({src2: process.env.PUBLIC_URL+this.state.multi[1].imgLink});
+      this.setState({src1: this.state.multi[0].imgLink});
+      this.setState({src2: this.state.multi[1].imgLink});
     }
   };
 
@@ -198,6 +199,7 @@ class Search extends React.Component {
           font: 'inherit',
         },
       }),
+      
     };
 
     return (
@@ -219,8 +221,29 @@ class Search extends React.Component {
                   />
                 </NoSsr>
               </Col>
+              <Col>
+                <NoSsr>
+                  <Select
+                    classes={classes}
+                    styles={selectStyles}
+                    options={suggestions}
+                    components={components}
+                    value={this.state.multi}
+                    onChange={this.handleChange('multi')}
+                    placeholder="Select multiple novels"
+                    isMulti
+                  />
+                </NoSsr>
+              </Col>
+            </Row>
+
+            <Row>
+              <Col></Col>
+              <Col><TitlebarGridList suggestions={suggestions}></TitlebarGridList></Col>
+              <Col></Col>
             </Row>
           </FormGroup>
+
           <FormGroup>
             <Row>
               <Col sm="5"></Col>
