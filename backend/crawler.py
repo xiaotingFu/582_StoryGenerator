@@ -1,21 +1,17 @@
-import os
-import codecs
 import requests
 from bs4 import BeautifulSoup
 from google.cloud import storage
 from langdetect import detect
 import six
+from Helper.DBHelper import DBHelper
 
 PROJECT_ID = 'mongodb-236418'
-CLOUD_STORAGE_BUCKET = 'fiction_db'
+CLOUD_STORAGE_BUCKET = 'fiction_db2'
 def _get_storage_client():
     return storage.Client(
         project=PROJECT_ID)
 
-
-
-# Inistalize firestore client
-
+# Inistalize google cloud client
 
 # [START upload_file]
 def upload_file(file_stream, foldername, filename, content_type):
@@ -28,16 +24,24 @@ def upload_file(file_stream, foldername, filename, content_type):
     bucket = client.bucket(CLOUD_STORAGE_BUCKET)
     print('{}/'.format(foldername) + filename)
     blob = bucket.blob('{}/'.format(foldername) + filename)
-
-    blob.upload_from_string(
-        file_stream,
-        content_type=content_type)
-
+    filepath = '{}/'.format(foldername)
+    stats = storage.Blob(bucket=bucket, name=filepath).exists(client)
+    if not stats:
+        print("Upload story to cloud.")
+        blob.upload_from_string(
+            file_stream,
+            content_type=content_type)
+        
+    else:
+        print("File already in cloud storage")
+    
     url = blob.public_url
-
+    print(url)
     if isinstance(url, six.binary_type):
         url = url.decode('utf-8')
+
     return url
+
 
 counter = 1
 site_path = "https://www.fanfiction.net"
@@ -68,7 +72,6 @@ for first_book_column in book_columns:
                 if book_names:
                     book1 = book_names[0].text.replace(' ', ' ')
                     book2 = book_names[1].text.replace(' ', ' ')
-                    print(book1, book2)
                     crossover_category = book_names[0].text.replace(' ', '_') + "_and_" + book_names[1].text.replace(' ', '_')
 
                     # new_directory_path = '../data/' + crossover_category
@@ -81,7 +84,7 @@ for first_book_column in book_columns:
                     #     break
                     # else:
                     #     print("Successfully created the directory %s " % new_directory_path)
-                    print("Crawling category%s " % crossover_category)
+                    print("Crawling category %s " % crossover_category)
                     list_of_stories = soup3.find_all('div', class_='z-list')
                     for story in list_of_stories:
 
@@ -91,58 +94,56 @@ for first_book_column in book_columns:
                         story_page = requests.get(story_url)
                         soup4 = BeautifulSoup(story_page.content, 'html.parser')
                         story_title = story_url.split('/')[-1:][0]
-                        if len(story_title) <= 100:
-                            print("- Crawling story %s" % story_title)
-                            story_text = ""
-                            # story_path = new_directory_path + '/' + story_title + ".txt"
+                        if detect(story_title) == 'en':
+                            if len(story_title) <= 100:
+                                print("- Crawling story %s" % story_title)
+                                story_text = ""
+                                # story_path = new_directory_path + '/' + story_title + ".txt"
 
-                            if soup4.find('select', id='chap_select'):
-                                chapters = soup4.find('select', id='chap_select').find_all('option')
-                                for chapter in chapters:
-                                    chapter_index = chapter['value']
-                                    story_link_broken = story_link.split('/')
-                                    story_link_broken[-2] = chapter_index
-                                    story_link = "/".join(story_link_broken)
+                                if soup4.find('select', id='chap_select'):
+                                    chapters = soup4.find('select', id='chap_select').find_all('option')
+                                    for chapter in chapters:
+                                        chapter_index = chapter['value']
+                                        story_link_broken = story_link.split('/')
+                                        story_link_broken[-2] = chapter_index
+                                        story_link = "/".join(story_link_broken)
 
-                                    story_page = requests.get(site_path + story_link)
-                                    soup4 = BeautifulSoup(story_page.content, 'html.parser')
+                                        story_page = requests.get(site_path + story_link)
+                                        soup4 = BeautifulSoup(story_page.content, 'html.parser')
 
+                                        story_page = soup4.find('div', id='storytext')
+
+                                        paragraph = story_page.find_all('p')
+                                        story_page = ' '.join(item.text for item in paragraph)
+                                        story_text += story_page
+                                        # # json record
+                                        # record = {
+                                        #     story_title[0]:  str(story_text)
+                                        # }
+                                        # extracted_crossovers.append(record)
+                                else:
                                     story_page = soup4.find('div', id='storytext')
-
                                     paragraph = story_page.find_all('p')
-                                    story_page = ' '.join(item.text for item in paragraph)
+                                    if paragraph:
+                                        story_page = ' '.join(item.text for item in paragraph)
+                                    else:
+                                        story_page = str(story_page)
                                     story_text += story_page
-                                    # # json record
-                                    # record = {
-                                    #     story_title[0]:  str(story_text)
-                                    # }
-                                    # extracted_crossovers.append(record)
-                            else:
-                                story_page = soup4.find('div', id='storytext')
-                                paragraph = story_page.find_all('p')
-                                story_page = ' '.join(item.text for item in paragraph)
-                                story_text += story_page
 
-                            if len(story_text) > 0:
-                                lang = detect(story_text)
-                            else:
-                                lang = 'null'
+                                if len(story_text) > 0:
+                                    lang = detect(story_text)
+                                else:
+                                    lang = 'null'
 
-                            if lang == 'en':
-                                # insert a record into the firebase db
-                                # story_data = {
-                                #     u"title":  u'{}'.format(story_title),
-                                #     u"book1": u'{}'.format(book1),
-                                #     u"book2": u'{}'.format(book2),
-                                #     u"content": u'{}'.format(story_text)
-                                # }
-                                # upload upload_file
-                                upload_file(story_text,crossover_category, story_title,'text/plain')
-                                # c = db.collection(u'fictions')
-                                # d = c.document(u'crossovers')
-                                # d.collection(u'{}'.format(crossover_category)).document(u'{}'.format(story_title)).set(story_data)
+                                if lang == 'en' and len(story_text) > 0:
 
-                            # with open(story_path, 'a+', encoding='utf-8') as f:
-                            #     f.write(story_text)
+                                    # upload file to google cloud and retrive its url
+                                    url = upload_file(story_text,crossover_category, story_title,'text/plain')
+
+                                    # update the url to database
+                                    db = DBHelper(book1, book2, story_title, url)
+                                    db.insert()
+                        else:
+                            print("Error: story title is in ", detect(story_title))
 
 
