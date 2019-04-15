@@ -1,13 +1,12 @@
 // frontend/src/App.js
 
 import React, { Component } from "react";
-import Modal from "./components/Modal";
 import CustomNavbar from "./components/CustomNavbar";
 import CustomStepper from "./components/CustomStepper";
 import Search from "./components/Search";
 import Setting from "./components/Setting";
 import Story from "./components/Story";
-import { Row, Col, Card, CardBody } from 'reactstrap';
+import { Row, Col, Card } from 'reactstrap';
 
 class App extends Component {
   constructor(props) {
