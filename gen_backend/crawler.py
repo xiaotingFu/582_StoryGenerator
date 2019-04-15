@@ -5,6 +5,11 @@ from langdetect import detect
 import six
 from Helper.DBHelper import DBHelper
 
+
+import re
+def parsename(s):
+    return " ".join(re.findall("[a-zA-Z]+", s))
+
 PROJECT_ID = 'mongodb-236418'
 CLOUD_STORAGE_BUCKET = 'fiction_db2'
 def _get_storage_client():
@@ -94,56 +99,67 @@ for first_book_column in book_columns:
                         story_page = requests.get(story_url)
                         soup4 = BeautifulSoup(story_page.content, 'html.parser')
                         story_title = story_url.split('/')[-1:][0]
-                        if detect(story_title) == 'en':
-                            if len(story_title) <= 100:
-                                print("- Crawling story %s" % story_title)
-                                story_text = ""
-                                # story_path = new_directory_path + '/' + story_title + ".txt"
+                        title_type = ""
+                        try:
+                            title_type = detect(story_title)
+                        except:
+                            print("langdetect.lang_detect_exception.LangDetectException: No features in text.")
+                            pass
 
-                                if soup4.find('select', id='chap_select'):
-                                    chapters = soup4.find('select', id='chap_select').find_all('option')
-                                    for chapter in chapters:
-                                        chapter_index = chapter['value']
-                                        story_link_broken = story_link.split('/')
-                                        story_link_broken[-2] = chapter_index
-                                        story_link = "/".join(story_link_broken)
+                        if title_type == 'en' and len(story_title) <= 100:
+                                db = DBHelper(parsename(book1), parsename(book2), parsename(story_title))
+                                if not db.isRecordExist():
+                                    print("- Crawling story %s" % story_title)
+                                    story_text = ""
+                                    # story_path = new_directory_path + '/' + story_title + ".txt"
+                                    try:
+                                        if soup4.find('select', id='chap_select'):
+                                            chapters = soup4.find('select', id='chap_select').find_all('option')
+                                            for chapter in chapters:
+                                                chapter_index = chapter['value']
+                                                story_link_broken = story_link.split('/')
+                                                story_link_broken[-2] = chapter_index
+                                                story_link = "/".join(story_link_broken)
 
-                                        story_page = requests.get(site_path + story_link)
-                                        soup4 = BeautifulSoup(story_page.content, 'html.parser')
+                                                story_page = requests.get(site_path + story_link)
+                                                soup4 = BeautifulSoup(story_page.content, 'html.parser')
 
-                                        story_page = soup4.find('div', id='storytext')
+                                                story_page = soup4.find('div', id='storytext')
 
-                                        paragraph = story_page.find_all('p')
-                                        story_page = ' '.join(item.text for item in paragraph)
-                                        story_text += story_page
-                                        # # json record
-                                        # record = {
-                                        #     story_title[0]:  str(story_text)
-                                        # }
-                                        # extracted_crossovers.append(record)
-                                else:
-                                    story_page = soup4.find('div', id='storytext')
-                                    paragraph = story_page.find_all('p')
-                                    if paragraph:
-                                        story_page = ' '.join(item.text for item in paragraph)
-                                    else:
-                                        story_page = str(story_page)
-                                    story_text += story_page
+                                                paragraph = story_page.find_all('p')
+                                                if paragraph:
+                                                    story_page = ' '.join(item.text for item in paragraph)
+                                                else:
+                                                    story_page = str(story_page)
+                                                story_text += story_page
 
-                                if len(story_text) > 0:
-                                    lang = detect(story_text)
-                                else:
-                                    lang = 'null'
+                                        else:
+                                            story_page = soup4.find('div', id='storytext')
+                                            paragraph = story_page.find_all('p')
+                                            if paragraph:
+                                                story_page = ' '.join(item.text for item in paragraph)
+                                            else:
+                                                story_page = str(story_page)
+                                            story_text += story_page
 
-                                if lang == 'en' and len(story_text) > 0:
+                                        if len(story_text) > 0:
+                                            lang = detect(story_text)
+                                        else:
+                                            lang = 'null'
 
-                                    # upload file to google cloud and retrive its url
-                                    url = upload_file(story_text,crossover_category, story_title,'text/plain')
-
-                                    # update the url to database
-                                    db = DBHelper(book1, book2, story_title, url)
-                                    db.insert()
+                                        if lang == 'en' and len(story_text) > 0:
+                                            try:
+                                                # upload file to google cloud and retrive its url
+                                                url = upload_file(story_text,crossover_category, story_title,'text/plain')
+                                                # update the url to database
+                                                db.url = url
+                                                db.insert()
+                                            except:
+                                                print("[ERROR] Upload to Google Cloud and Database")
+                                                pass
+                                    except:
+                                        print("[ERROR] Unable to find chapter")
+                                        pass
                         else:
-                            print("Error: story title is in ", detect(story_title))
-
+                            print("[Error] Story not in english")
 

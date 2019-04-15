@@ -13,17 +13,17 @@ SQLite Database
 
 class DBHelper:
 
-    def __init__(self):
-        self.book1 = ""
-        self.book2 = ""
-        self.title = ""
-        self.url = ""
+    # def __init__(self):
+    #     self.book1 = ""
+    #     self.book2 = ""
+    #     self.title = ""
+    #     self.url = ""
 
-    # def __init__(self, book1, book2, title, url):
-    #     self.book1 = book1
-    #     self.book2 = book2
-    #     self.title = title
-    #     self.url = url
+    def __init__(self, book1, book2, title):
+        self.book1 = book1
+        self.book2 = book2
+        self.title = title
+        self.url = ""
 
     def insert(self):
         sqlite_file = 'db.sqlite3'
@@ -36,17 +36,22 @@ class DBHelper:
         conn.commit()
         conn.close()
 
-    def select(self, book1, book2):
+    def isRecordExist(self):
+        """
+        Return if the record exist or not
+        :param book1:
+        :param book2:
+        :param title:
+        :return:
+        """
         sqlite_file = 'db.sqlite3'
         conn = sqlite3.connect(sqlite_file)
         c = conn.cursor()
-        sql = "SELECT url FROM Story WHERE book1='{b1}' AND book2='{b2}'".format(b1=book1, b2=book2)
+        sql = "SELECT * FROM Story WHERE book1='{b1}' AND book2='{b2}' AND title ='{t}'".format(b1=self.book1, b2=self.book2, t=self.title)
         c.execute(sql)
-        all_rows = c.fetchall()
-        conn.commit()
+        data = c.fetchall()
         conn.close()
-        for row in all_rows:
-            print(row[0])
-        return None
-
-DBHelper().select("Harry Potter", "Twilight")
+        if len(data) > 0:
+            print('Record exist already, skip.')
+            return True
+        return False
