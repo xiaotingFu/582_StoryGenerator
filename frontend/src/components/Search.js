@@ -12,7 +12,7 @@ import Paper from '@material-ui/core/Paper';
 import Chip from '@material-ui/core/Chip';
 import MenuItem from '@material-ui/core/MenuItem';
 import { books } from '../books';
-// import TitlebarGridList from './TitlebarGridList';
+import TitlebarGridList from './TitlebarGridList';
 import { emphasize } from '@material-ui/core/styles/colorManipulator';
 import { Row, Col, Form, FormGroup } from 'reactstrap';
 
@@ -239,7 +239,7 @@ class Search extends React.Component {
 
             <Row>
               <Col></Col>
-              {/* <Col><TitlebarGridList suggestions={suggestions}></TitlebarGridList></Col> */}
+              <Col><TitlebarGridList suggestions={suggestions}></TitlebarGridList></Col>
               <Col></Col>
             </Row>
           </FormGroup>
