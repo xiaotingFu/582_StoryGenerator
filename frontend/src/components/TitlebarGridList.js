@@ -4,7 +4,6 @@ import { withStyles } from '@material-ui/core/styles';
 import GridList from '@material-ui/core/GridList';
 import GridListTile from '@material-ui/core/GridListTile';
 import GridListTileBar from '@material-ui/core/GridListTileBar';
-import ListSubheader from '@material-ui/core/ListSubheader';
 import IconButton from '@material-ui/core/IconButton';
 
 const styles = theme => ({
@@ -49,19 +48,17 @@ class TitlebarGridList extends React.Component {
   };
 
   render() {
-    console.log(this.props.suggestions);
     const { classes } = this.props;
 
     return (
       <div className={classes.root}>
         <GridList cellHeight={"auto"} className={classes.gridList}>
-
-          {this.props.suggestions.map(tile => (
-            <GridListTile key={tile.label}>
-              <img src={tile.imgLink} alt={tile.label} />
+          {this.props.suggestions.map(title => (
+            <GridListTile key={title.label}>
+              <img src={title.imgLink} alt={title.label} />
               <GridListTileBar
-                title={tile.label}
-                subtitle={<span>by: {tile.author}</span>}
+                title={title.label}
+                subtitle={<span>by: {title.author}</span>}
                 actionIcon={
                   <IconButton className={classes.icon}>
                   </IconButton>

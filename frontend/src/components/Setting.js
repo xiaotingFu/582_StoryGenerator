@@ -58,7 +58,7 @@ export default class Setting extends React.Component {
             </Col>
             <Col sm="3"></Col>
           </Row>
-          </FormGroup>
+        </FormGroup>
       </Form>
     );
   }

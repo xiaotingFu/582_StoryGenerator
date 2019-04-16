@@ -13,7 +13,9 @@ class App extends Component {
     super(props);
     this.state = {
       query: "",
-      activeStep: 0,
+      activeStep: 2,
+      firstNovel: null,
+      secondNovel: null
     };
   }
 
@@ -29,14 +31,26 @@ class App extends Component {
     this.setState({activeStep});
   }
 
+  changeFirstNovel(firstNovel) {
+    this.setState({firstNovel});
+  }
+
+  changeSecondNovel(secondNovel) {
+    this.setState({secondNovel});
+  }
+
   renderByActiveStep(step) {
     switch (step) {
       case 0:
-        return <Search changeActiveStep={step=>this.changeActiveStep(step)}></Search>;
+        return <Search changeFirstNovel={(firstNovel)=>this.changeFirstNovel(firstNovel)} 
+                      changeSecondNovel={(secondNovel)=>this.changeSecondNovel(secondNovel)} 
+                      changeActiveStep={step=>this.changeActiveStep(step)}></Search>;
       case 1:
         return <Setting changeActiveStep={step=>this.changeActiveStep(step)}></Setting>;
       case 2:
-        return <Story changeActiveStep={step=>this.changeActiveStep(step)}></Story>;
+        return <Story firstNovel={this.state.firstNovel} 
+                      secondNovel={this.state.secondNovel}
+                      changeActiveStep={step=>this.changeActiveStep(step)}></Story>;
       default:
         break;
     }
@@ -58,7 +72,8 @@ class App extends Component {
         <Row>
           <Col sm="1"></Col>
           <Col sm="10">
-            <Card className="h-100 p-3">
+            <Card className="h-100 p-3" 
+              style={{ backgroundImage: "url(texture/vintage-concrete.png)" }}>
               {this.renderByActiveStep(this.state.activeStep)}
             </Card>
           </Col>
