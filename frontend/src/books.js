@@ -476,7 +476,7 @@ export const books = [
     "language": "German",
     "link": "https://en.wikipedia.org/wiki/Franz_Kafka_bibliography#Short_stories\n",
     "pages": 488,
-    "title": "Stories",
+    "title": "Stories II",
     "year": 1924
   },
   {
@@ -556,7 +556,7 @@ export const books = [
     "language": "Italian",
     "link": "\n",
     "pages": 184,
-    "title": "Poems",
+    "title": "Poems II",
     "year": 1818
   },
   {

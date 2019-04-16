@@ -8,9 +8,6 @@ import {
   Nav,
   NavItem,
   NavLink,
-  UncontrolledDropdown,
-  DropdownToggle,
-  DropdownMenu,
   DropdownItem
 } from 'reactstrap';
 
@@ -46,7 +43,7 @@ export default class CustomNavbar extends React.Component {
           <Collapse isOpen={this.state.isOpen} navbar>
             <Nav className="ml-auto" navbar>
               <NavItem>
-                <NavLink target="_blank" href="https://github.com/feelbergood/CSC540Project">GitHub</NavLink>
+                <NavLink target="_blank" href="https://github.com/feelbergood/582_StoryGenerator">GitHub</NavLink>
               </NavItem>
             </Nav>
           </Collapse>
