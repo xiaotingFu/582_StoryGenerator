@@ -1,42 +1,109 @@
 const sqlite3 = require('sqlite3').verbose();
-var sqlitefile = '../../db/db.sqlite3';
 var express = require('express');
 var router = express.Router();
+const path = require('path');
+const dbPath = path.resolve(__dirname, '../../db/db.sqlite3');
+var fs = require("fs");
+/**
+ * Test POST
+book1:Harry Potter
+book2:Hobbit
+romance:2
+cliche:3
+horror:5
+boring:2
+violence:1
+ */
+class Story {
 
-function get_bookcontent(book1, book2, res){
-    //connect to database
-    var arr = [];
-    var dict = {};
-    let db = new sqlite3.Database(sqlitefile, sqlite3.OPEN_READWRITE, (err) => {
-        if (err) {
-          console.error(err.message);
-        }
-        console.log('Connected to the story database.');
-      }); 
-    
-      db.each(`SELECT title, url from Story where book1='${book1}' AND book2='${book2}'`, (err, row) => {
-        if (err) {
-          console.error(err.message);
-        }
-        //console.log(row.title + "\t" + row.url);
-        dict[row.title]=row.url; 
-        arr.push(row.url);
-      }); 
-    db.close((err) => {
-        if (err) {
-          console.error(err.message);
-        } 
-        console.log(dict);
-        console.log('Close the database connection.'); 
-        res.send(dict);
-    });  
-} 
+  constructor(book1, book2) {
+    this.book1 = book1;
+    this.book2 = book2;
+    this.romance = 1;
+    this.cliche = 1;
+    this.horror = 1;
+    this.boring = 1;
+    this.violence = 1;
+  }
 
-/* GET users listing. */
-router.get('/', function(req, res, next) {
-    var book1 = req.query.book1;
-    var book2 = req.query.book2;
-    get_bookcontent(book1, book2 , res); 
+}
+/**
+     * Given a story content 
+     * Get the story url and send the data to the generator
+     * Save the temp data to a json file
+     */
+function get_bookcontent(story, res) {
+  //connect to database
+  var dict = {};
+  let db = new sqlite3.Database(dbPath, sqlite3.OPEN_READWRITE, (err) => {
+    if (err) {
+      console.error(err.message);
+    }
+    console.log('Connected to the story database.');
+  });
+
+  db.each(`SELECT title, url from Story where book1='${story.book1}' AND book2='${story.book2}'`, (err, row) => {
+    if (err) {
+      console.error(err.message);
+    }
+    dict[row.title] = row.url;
+  });
+  db.close((err) => {
+    if (err) {
+      console.error(err.message);
+    }
+    console.log(dict);
+    console.log('Close the database connection.');
+    fs.writeFile("../db/tmp.json", JSON.stringify(dict), (err) => {
+      if (err) {
+        console.error(err);
+        return;
+      };
+      console.log("JSON file has been created/updated!");
+    });
+    //a dictionary
+    const { spawn } = require('child_process');
+    const pyprog = spawn('python', ['model/run.py']);
+    // let runPy = new Promise(function (success, nosuccess) {
+
+    //   const { spawn } = require('child_process');
+    //   const pyprog = spawn('python', ['../gen_backend/run_generator.py']);
+    //   pyprog.stdout.on('data', function (data) {
+    //     success(data);
+    //   });
+
+    //   pyprog.stderr.on('data', (data) => {
+    //     nosuccess(data);
+    //   });
+    // });
+    // res.write('welcome\n');
+    // runPy.then(function (fromRunpy) {
+
+    //   console.log(fromRunpy.toString());
+    //   res.end(fromRunpy);
+    // });
+
+    pyprog.stdout.on('data', function (data) {
+        console.log(data.toString());
+        res.send(data);
+        res.end('end');
+    });
+  });
+}
+
+/* GET books listing. */
+router.get('/', function (req, res, next) {
+
+  var story = new Story(req.query.book1, req.query.book2)
+  story.romance = req.query.romance;
+  story.cliche = req.query.cliche;
+  story.horror = req.query.horror;
+  story.boring = req.query.boring;
+  story.violence = req.query.violence;
+
+  get_bookcontent(story, res);
+
 });
+
 
 module.exports = router;
