@@ -70,7 +70,8 @@ export default class Story extends React.Component {
             <div className="document-editor__toolbar"></div>
             <div className="document-editor__editable-container">
                 <div className="document-editor__editable">
-                    <p>{this.props.finalNovel.story}</p>
+                    <p>{this.props.finalNovel?
+                        this.props.finalNovel.story:storyText}</p>
                 </div>
             </div>
         </div>          
