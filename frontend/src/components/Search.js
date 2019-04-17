@@ -66,6 +66,8 @@ class Search extends React.Component {
   submit = () => {
     if (this.state.firstNovel && this.state.secondNovel && 
       this.state.firstNovel.label!==this.state.secondNovel.label) {
+      this.props.changeFirstNovel(this.state.firstNovel);
+      this.props.changeSecondNovel(this.state.secondNovel);
       this.props.changeActiveStep(1);
     } else if (!this.state.firstNovel) {
       alert("Please select first novel!");

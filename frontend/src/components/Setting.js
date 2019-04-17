@@ -25,9 +25,11 @@ export default class Setting extends React.Component {
     console.log(this.props);
     // get ready for fetch
     let url = Config.url+"/books";
+    const book1 = this.props.firstNovel.label;
+    const book2 = this.props.secondNovel.label;
     let params = {
-      book1: "Harry Potter",
-      book2: "Hobbit",
+      book1: book1,
+      book2: book2,
       romance: this.state.romance,
       cliche: this.state.cliche,
       horror: this.state.horror,
@@ -55,13 +57,14 @@ export default class Setting extends React.Component {
     .catch((error)=>{console.log(error)})
     .then((response) => {
       if (!response) {
-        alert('Ooops, there is something wrong with your network!');
+        // alert('Ooops, there is something wrong with your network!');
         return;
       }
       // console.log(response);
       this.props.setFinalNovel(response);
       this.props.changeActiveStep(2);
     });
+    // this.props.changeActiveStep(2);
   }
 
   render() {

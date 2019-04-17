@@ -51,7 +51,6 @@ export default class Story extends React.Component {
     element.click();
   }
 
-
   render() {
     return (
       <Form>
