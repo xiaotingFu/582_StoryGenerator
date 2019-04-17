@@ -68,29 +68,20 @@ function get_bookcontent(story, res) {
     });
     //a dictionary
     const { spawn } = require('child_process');
-    const pyprog = spawn('python', ['model/run.py']);
-    // let runPy = new Promise(function (success, nosuccess) {
-
-    //   const { spawn } = require('child_process');
-    //   const pyprog = spawn('python', ['../gen_backend/run_generator.py']);
-    //   pyprog.stdout.on('data', function (data) {
-    //     success(data);
-    //   });
-
-    //   pyprog.stderr.on('data', (data) => {
-    //     nosuccess(data);
-    //   });
-    // });
-    // res.write('welcome\n');
-    // runPy.then(function (fromRunpy) {
-
-    //   console.log(fromRunpy.toString());
-    //   res.end(fromRunpy);
-    // });
-
+    const pyprog = spawn('python', ['../gen_backend/story_preprocess.py']);
     pyprog.stdout.on('data', function (data) {
-        console.log(data.toString());
-        var sendfile = {"story": data.toString()};
+        //console.log(data.toString());
+        var storyfile = '../db/output.txt';
+        var story_content;
+        // First I want to read the file
+        fs.readFile(storyfile, function read(err, data) {
+            if (err) {
+                throw err;
+            }
+            story_content = data;
+        });
+        console.log(story_content.toString())
+        var sendfile = {"story": story_content.toString()};
         res.send(JSON.stringify(sendfile));
         res.end('end');
     });
