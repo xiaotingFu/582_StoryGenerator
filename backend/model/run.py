@@ -18,7 +18,9 @@ with open('../db/tmp.json') as json_file:
     storysetting = json.load(json_file)
 # call story generator to generate story...
 
-print('Harry bypassed the Great Hall, where those who were wounded were being treated by Madam Pomfrey. He didnt want her help or anyone elses for that matter, He climbed the stairs up to Gryffindor tower where he went to lay in his bed and waited for death.')
+with open('../db/output.txt') as f:
+    story = f.read()
+    print(story)
 sys.stdout.flush()
     # stories = {}
     # # print(d)
