@@ -4,7 +4,6 @@ var router = express.Router();
 const path = require('path');
 const dbPath = path.resolve(__dirname, '../../db/db.sqlite3');
 var fs = require("fs");
-var cors = require('cors')
 /**
  * Test POST
 book1:Harry Potter
@@ -98,7 +97,7 @@ function get_bookcontent(story, res) {
 }
 
 /* GET books listing. */
-router.get('/', cors(), function (req, res, next) {
+router.get('/', function (req, res, next) {
 
   var story = new Story(req.query.book1, req.query.book2)
   story.romance = req.query.romance;
