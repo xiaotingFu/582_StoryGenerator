@@ -1,13 +1,14 @@
 const sqlite3 = require('sqlite3').verbose();
-var sqlitefile = '../../db/db.sqlite3';
 var express = require('express');
 var router = express.Router();
+const path = require('path')
+const dbPath = path.resolve(__dirname, '../../db/db.sqlite3')
 
 function get_bookcontent(book1, book2, res){
     //connect to database
     var arr = [];
     var dict = {};
-    let db = new sqlite3.Database(sqlitefile, sqlite3.OPEN_READWRITE, (err) => {
+    let db = new sqlite3.Database(dbPath, sqlite3.OPEN_READWRITE, (err) => {
         if (err) {
           console.error(err.message);
         }
@@ -19,7 +20,10 @@ function get_bookcontent(book1, book2, res){
           console.error(err.message);
         }
         //console.log(row.title + "\t" + row.url);
-        dict[row.title]=row.url; 
+	if (Object.keys(dict).length < 1){
+	dict[row.title]=row.url;
+	}
+	 
         arr.push(row.url);
       }); 
     db.close((err) => {
