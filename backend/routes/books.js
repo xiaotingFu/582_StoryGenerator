@@ -90,7 +90,6 @@ function get_bookcontent(story, res) {
 
 /* GET books listing. */
 router.get('/', function (req, res, next) {
-
   var story = new Story(req.query.book1, req.query.book2)
   story.romance = req.query.romance;
   story.cliche = req.query.cliche;
@@ -99,8 +98,6 @@ router.get('/', function (req, res, next) {
   story.violence = req.query.violence;
   story.storylength = req.query.storylength;
   get_bookcontent(story, res);
-
 });
-
 
 module.exports = router;

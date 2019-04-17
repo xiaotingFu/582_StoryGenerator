@@ -7,7 +7,7 @@ import hashlib
 # from spacy import displacy
 # from collections import Counter
 # nlp = spacy.load("en_core_web_sm")
-
+print("==========Start generating story=========")
 with open('../db/tmp.json') as json_file:
     data = json.load(json_file)
     url_list = data['urls']
