@@ -1,4 +1,8 @@
-import React from 'react';
+import React, {Component, PropTypes} from 'react';
+import axios from "axios";
+import {saveAs} from "file-saver";
+import html2canvas from 'html2canvas';
+import jsPDF from 'jspdf';
 import DecoupledEditor from '@ckeditor/ckeditor5-build-decoupled-document';
 import { Row, Col, Button, Form, FormGroup, Label, Input } from 'reactstrap';
 
@@ -14,7 +18,6 @@ export default class Story extends React.Component {
   constructor(props) {
     super(props);
   }
-
   componentDidMount() {
     // document.querySelector( '.document-editor__editable' ).innerHTML = "<p>Hello World</p>";
     DecoupledEditor
@@ -42,9 +45,21 @@ export default class Story extends React.Component {
               </Label>);
     }
   }
+
+  // _exportPdf = () => {
+  //   console.log(document.querySelector("#capture"));
+  //   html2canvas(document.querySelector("#capture")).then(canvas => {
+  //      document.body.appendChild(canvas);  // if you want see your screenshot in body.
+  //      const imgData = canvas.toDataURL('image/png');
+  //      const pdf = new jsPDF();
+  //      pdf.addImage(imgData, 'PNG', 0, 0);
+  //      pdf.save("download.pdf"); 
+  //  });
+  // }
+
   downloadTxtFile = () => {
     const element = document.createElement("a");
-    const file = new Blob([document.getElementById('myInput').value], {type: 'text/plain'});
+    const file = new Blob([document.getElementById('myInput').innerText], {type: 'text/plain'});
     element.href = URL.createObjectURL(file);
     element.download = "myFile.txt";
     document.body.appendChild(element); // Required for this to work in FireFox
@@ -54,21 +69,15 @@ export default class Story extends React.Component {
   render() {
     return (
       <Form>
-        {/* <FormGroup>
-          <Label for="storyText">
-            {this.title()}
-          </Label>
-          <Input type="textarea" name="text" id="storyText" 
-            style={{height: "600px"}} placeholder={storyText}/>
-        </FormGroup> */}
-
         <FormGroup>
         <div className="document-editor">
             <div className="document-editor__toolbar"></div>
             <div className="document-editor__editable-container">
-                <div className="document-editor__editable">
+                <div className="document-editor__editable" id='myInput'>
+
                     <p>{this.props.finalNovel?
                         this.props.finalNovel.story:storyText}</p>
+
                 </div>
             </div>
         </div>          
@@ -96,14 +105,15 @@ export default class Story extends React.Component {
             <Col>
               <Button type="button"
                 color="primary"
+                // onClick={this._exportPdf}
                 onClick={this.downloadTxtFile}
                 className="btn btn-block">
-                Download PDF
-                </Button>
+                Click here for your story</Button>
             </Col>
             <Col sm="1"></Col>
           </Row>
         </FormGroup>
+
       </Form>
     );
   }
