@@ -14,7 +14,7 @@ export default class Setting extends React.Component {
     horror: "1",
     boring: "1",
     violence: "1",
-    storylength: "1000",
+    storylength: "5000",
   }
 
   handleChange = (value) => (event) => {
@@ -134,10 +134,11 @@ export default class Setting extends React.Component {
             </Col>
             <Col md={6}>
               <Label for="storyLength">Story Length</Label>
-              <Input type="select" name="sLength" id="storyLength">
-                <option value="500" label="0~500"/>
-                <option value="1000" label="500~1000"/>
-                <option value="2000" label="1000~2000"/>
+              <Input type="select" name="sLength" id="storyLength"
+                    value={this.state.storylength} onChange={this.handleChange("storylength")}>
+                <option value="5000" label="0~5000"/>
+                <option value="10000" label="5000~10000"/>
+                <option value="20000" label="10000~20000"/>
               </Input>
             </Col>
           </Row>
