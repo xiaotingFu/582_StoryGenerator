@@ -46,16 +46,26 @@ export default class Story extends React.Component {
     }
   }
 
-  _exportPdf = () => {
-    console.log(html2canvas);
-    html2canvas(document.querySelector("#capture")).then(canvas => {
-       document.body.appendChild(canvas);  // if you want see your screenshot in body.
-       const imgData = canvas.toDataURL('image/png');
-       const pdf = new jsPDF();
-       pdf.addImage(imgData, 'PNG', 0, 0);
-       pdf.save("download.pdf"); 
-   });
+  // _exportPdf = () => {
+  //   console.log(document.querySelector("#capture"));
+  //   html2canvas(document.querySelector("#capture")).then(canvas => {
+  //      document.body.appendChild(canvas);  // if you want see your screenshot in body.
+  //      const imgData = canvas.toDataURL('image/png');
+  //      const pdf = new jsPDF();
+  //      pdf.addImage(imgData, 'PNG', 0, 0);
+  //      pdf.save("download.pdf"); 
+  //  });
+  // }
+
+  downloadTxtFile = () => {
+    const element = document.createElement("a");
+    const file = new Blob([document.getElementById('myInput').innerText], {type: 'text/plain'});
+    element.href = URL.createObjectURL(file);
+    element.download = "myFile.txt";
+    document.body.appendChild(element); // Required for this to work in FireFox
+    element.click();
   }
+
   render() {
     return (
       <Form>
@@ -63,9 +73,11 @@ export default class Story extends React.Component {
         <div className="document-editor">
             <div className="document-editor__toolbar"></div>
             <div className="document-editor__editable-container">
-                <div className="document-editor__editable">
+                <div className="document-editor__editable" id='myInput'>
+
                     <p>{this.props.finalNovel?
                         this.props.finalNovel.story:storyText}</p>
+
                 </div>
             </div>
         </div>          
@@ -93,14 +105,15 @@ export default class Story extends React.Component {
             <Col>
               <Button type="button"
                 color="primary"
-                onClick={this._exportPdf}
+                // onClick={this._exportPdf}
+                onClick={this.downloadTxtFile}
                 className="btn btn-block">
-                Click here for my pdf
-                </Button>
+                Click here for your story</Button>
             </Col>
             <Col sm="1"></Col>
           </Row>
         </FormGroup>
+
       </Form>
     );
   }
