@@ -14,7 +14,7 @@ export default class Story extends React.Component {
   title() {
     if (this.props.firstNovel && this.props.secondNovel) {
       return (<Label for="storyText">
-                Your Crossover of {this.props.firstNovel.label} and {this.props.secondNovel.label}
+                Your Crossover of {this.props.firstNovel.value} and {this.props.secondNovel.value}
               </Label>);
     }
   }
