@@ -34,12 +34,16 @@ const styles = theme => ({
 });
 
 class Search extends React.Component {
+  constructor(props) {
+    super(props);
+  }
+
   state = {
     single: null,
     firstNovel: null,
     secondNovel: null,
     collapse: false,
-  };
+  }
 
   componentDidMount() {
   }
@@ -51,7 +55,7 @@ class Search extends React.Component {
     if (value) {
       this.loadNovelFromServer(name, value.label);
     }
-  };
+  }
 
   toggle = () => {
     this.setState({
@@ -62,29 +66,7 @@ class Search extends React.Component {
   submit = () => {
     if (this.state.firstNovel && this.state.secondNovel && 
       this.state.firstNovel.label!==this.state.secondNovel.label) {
-      let url = Config.url+"/books";
-      let data = {
-        book1: this.state.firstNovel.label,
-        book2: this.state.secondNovel.label,
-      }
-      fetch(url, {
-        method: 'POST',
-        body: JSON.stringify(data),
-        headers: new Headers({
-          'Content-Type': 'application/json'
-        })
-      }).then(res => res.json())
-      .catch((error)=>{console.log(error)})
-      .then((response) => {
-        if (!response || response.status !== 200) {
-          alert('Ooops, there is something wrong with your network!');
-          return;
-        }
-        this.props.setFinalNovel(response);
-        this.props.changeFirstNovel(this.state.firstNovel);
-        this.props.changeSecondNovel(this.state.secondNovel);
-        this.props.changeActiveStep(1);
-      });
+      this.props.changeActiveStep(1);
     } else if (!this.state.firstNovel) {
       alert("Please select first novel!");
     } else if (!this.state.secondNovel) {
