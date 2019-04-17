@@ -1,4 +1,6 @@
 import React from 'react';
+import CKEditor from '@ckeditor/ckeditor5-react';
+import ClassicEditor from '@ckeditor/ckeditor5-build-classic';
 import { Row, Col, Button, Form, FormGroup, Label, Input } from 'reactstrap';
 
 const storyText = `Bilbo Baggins walked out of his home of Bag End and into the sunshine. He felt the warmth of the sun trickle down his head and bare feet. The countryside around Bag end was almost empty, so Bilbo decided to take a peaceful walk to a nearby forest. Along the way, he passed by the scowling Sacksville-Bagginses, who always envied Bilbo's luxurious Bag End. Bilbo's mood went down a bit, seeing his cousin Otho Sacksville-Baggins. But Bilbo smiled and said "Good day to you" to his 
@@ -22,14 +24,36 @@ export default class Story extends React.Component {
   render() {
     return (
       <Form>
-        <FormGroup>
+        {/* <FormGroup>
           <Label for="storyText">
             {this.title()}
           </Label>
           <Input type="textarea" name="text" id="storyText" 
             style={{height: "600px"}} placeholder={storyText}/>
-        </FormGroup>
+        </FormGroup> */}
+
         <FormGroup>
+          <CKEditor
+            editor={ ClassicEditor }
+            data={storyText}
+            onInit={ editor => {
+                // You can store the "editor" and use when it is needed.
+                console.log( 'Editor is ready to use!', editor );
+            } }
+            onChange={ ( event, editor ) => {
+                const data = editor.getData();
+                console.log( { event, editor, data } );
+            } }
+            onBlur={ editor => {
+                console.log( 'Blur.', editor );
+            } }
+            onFocus={ editor => {
+                console.log( 'Focus.', editor );
+            } }
+            />
+        </FormGroup>
+
+        <FormGroup>  
           <Row>
             <Col sm="2"></Col>
             <Col sm="3">
