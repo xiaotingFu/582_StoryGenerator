@@ -14,7 +14,8 @@ class App extends Component {
     super(props);
     this.state = {
       query: "",
-      activeStep: 0,
+      activeStep: 1,
+      response: null,
       firstNovel: null,
       secondNovel: null,
       finalNovel: null,
@@ -45,15 +46,20 @@ class App extends Component {
     this.setState({finalNovel});
   }
 
+  setResponse(response) {
+    this.setState(response);
+  }
+
   renderByActiveStep(step) {
     switch (step) {
       case 0:
         return <Search changeFirstNovel={(firstNovel)=>this.changeFirstNovel(firstNovel)} 
                       changeSecondNovel={(secondNovel)=>this.changeSecondNovel(secondNovel)} 
                       changeActiveStep={step=>this.changeActiveStep(step)}
-                      setFinalNovel={novel=>this.setFinalNovel(novel)}></Search>;
+                      setResponse={res=>this.setResponse(res)}></Search>;
       case 1:
-        return <Setting changeActiveStep={step=>this.changeActiveStep(step)}></Setting>;
+        return <Setting changeActiveStep={step=>this.changeActiveStep(step)}
+                      setFinalNovel={novel=>this.setFinalNovel(novel)}></Setting>;
       case 2:
         return <Story firstNovel={this.state.firstNovel} 
                       secondNovel={this.state.secondNovel}
