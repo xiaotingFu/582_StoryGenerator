@@ -6,14 +6,18 @@ import CustomStepper from "./components/CustomStepper";
 import Search from "./components/Search";
 import Setting from "./components/Setting";
 import Story from "./components/Story";
+
 import { Row, Col, Card } from 'reactstrap';
+
+
+
 
 class App extends Component {
   constructor(props) {
     super(props);
     this.state = {
       query: "",
-      activeStep: 2,
+      activeStep: 0,
       firstNovel: null,
       secondNovel: null
     };
@@ -45,6 +49,9 @@ class App extends Component {
         return <Search changeFirstNovel={(firstNovel)=>this.changeFirstNovel(firstNovel)} 
                       changeSecondNovel={(secondNovel)=>this.changeSecondNovel(secondNovel)} 
                       changeActiveStep={step=>this.changeActiveStep(step)}></Search>;
+                      // function(step) {
+                      //   this.changeActiveStep(step);
+                      // }
       case 1:
         return <Setting changeActiveStep={step=>this.changeActiveStep(step)}></Setting>;
       case 2:
