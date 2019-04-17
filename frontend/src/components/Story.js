@@ -108,7 +108,8 @@ export default class Story extends React.Component {
                 // onClick={this._exportPdf}
                 onClick={this.downloadTxtFile}
                 className="btn btn-block">
-                Click here for your story</Button>
+                Save as txt
+                </Button>
             </Col>
             <Col sm="1"></Col>
           </Row>
