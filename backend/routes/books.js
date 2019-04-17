@@ -4,6 +4,7 @@ var router = express.Router();
 const path = require('path');
 const dbPath = path.resolve(__dirname, '../../db/db.sqlite3');
 var fs = require("fs");
+var cors = require('cors')
 /**
  * Test POST
 book1:Harry Potter
@@ -14,6 +15,8 @@ horror:5
 boring:2
 violence:1
  */
+
+ //Backend support CORS
 class Story {
 
   constructor(book1, book2) {
@@ -24,6 +27,8 @@ class Story {
     this.horror = 1;
     this.boring = 1;
     this.violence = 1;
+    this.storylength = 10000;
+    this.urls = [];
   }
 
 }
@@ -47,6 +52,7 @@ function get_bookcontent(story, res) {
       console.error(err.message);
     }
     dict[row.title] = row.url;
+    story.urls.push(row.url);
   });
   db.close((err) => {
     if (err) {
@@ -54,7 +60,7 @@ function get_bookcontent(story, res) {
     }
     console.log(dict);
     console.log('Close the database connection.');
-    fs.writeFile("../db/tmp.json", JSON.stringify(dict), (err) => {
+    fs.writeFile("../db/tmp.json", JSON.stringify(story), (err) => {
       if (err) {
         console.error(err);
         return;
@@ -92,7 +98,7 @@ function get_bookcontent(story, res) {
 }
 
 /* GET books listing. */
-router.get('/', function (req, res, next) {
+router.get('/', cors(), function (req, res, next) {
 
   var story = new Story(req.query.book1, req.query.book2)
   story.romance = req.query.romance;
@@ -100,7 +106,7 @@ router.get('/', function (req, res, next) {
   story.horror = req.query.horror;
   story.boring = req.query.boring;
   story.violence = req.query.violence;
-
+  story.storylength = req.query.storylength;
   get_bookcontent(story, res);
 
 });

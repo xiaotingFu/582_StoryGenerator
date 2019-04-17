@@ -1,4 +1,4 @@
-# import urllib.request as urllib2
+# import urllib.request
 import json
 import sys
 # def generator(stories):
@@ -25,7 +25,7 @@ sys.stdout.flush()
     #     url = d[title]
     #     # print(title, url)
     #     story_content = ""
-    #     for line in urllib2.urlopen(url):
+    #     for line in urllib.request.urlopen(url):
     #         story_content += str(line)
     #     stories[title] = story_content
 
