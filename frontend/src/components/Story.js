@@ -4,8 +4,6 @@ import {saveAs} from "file-saver";
 import html2canvas from 'html2canvas';
 import jsPDF from 'jspdf';
 import DecoupledEditor from '@ckeditor/ckeditor5-build-decoupled-document';
-
-
 import { Row, Col, Button, Form, FormGroup, Label, Input } from 'reactstrap';
 
 const storyText = `Bilbo Baggins walked out of his home of Bag End and into the sunshine. He felt the warmth of the sun trickle down his head and bare feet. The countryside around Bag end was almost empty, so Bilbo decided to take a peaceful walk to a nearby forest. Along the way, he passed by the scowling Sacksville-Bagginses, who always envied Bilbo's luxurious Bag End. Bilbo's mood went down a bit, seeing his cousin Otho Sacksville-Baggins. But Bilbo smiled and said "Good day to you" to his 
@@ -61,20 +59,13 @@ export default class Story extends React.Component {
   render() {
     return (
       <Form>
-        {/* <FormGroup>
-          <Label for="storyText">
-            {this.title()}
-          </Label>
-          <Input type="textarea" name="text" id="storyText" 
-            style={{height: "600px"}} placeholder={storyText}/>
-        </FormGroup> */}
-
         <FormGroup>
         <div className="document-editor">
             <div className="document-editor__toolbar"></div>
             <div className="document-editor__editable-container">
                 <div className="document-editor__editable">
-                    <p>{storyText}</p>
+                    <p>{this.props.finalNovel?
+                        this.props.finalNovel.story:storyText}</p>
                 </div>
             </div>
         </div>          
