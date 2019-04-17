@@ -90,7 +90,7 @@ function get_bookcontent(story, res) {
 
     pyprog.stdout.on('data', function (data) {
         console.log(data.toString());
-        var sendfile = {"story": data};
+        var sendfile = {"story": data.toString()};
         res.send(JSON.stringify(sendfile));
         res.end('end');
     });
