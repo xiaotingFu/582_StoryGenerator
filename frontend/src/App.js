@@ -9,9 +9,6 @@ import Story from "./components/Story";
 
 import { Row, Col, Card } from 'reactstrap';
 
-
-
-
 class App extends Component {
   constructor(props) {
     super(props);

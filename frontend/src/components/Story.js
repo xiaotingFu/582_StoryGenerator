@@ -77,24 +77,32 @@ export default class Story extends React.Component {
 
         <FormGroup>  
           <Row>
-            <Col sm="2"></Col>
-            <Col sm="3">
+            <Col sm="1"></Col>
+            <Col>
               <Button type="button"
                 onClick={() => this.props.changeActiveStep(0)}
                 className="btn btn-primary btn-block">
                 New Crossover
               </Button>
             </Col>
-            <Col sm="2"></Col>
-            <Col sm="3">
+            <Col sm="1"></Col>
+            <Col>
               <Button type="button"
                 onClick={() => this.props.changeActiveStep(1)}
                 className="btn btn-block">
                 Adjust Settings
               </Button>
-              <button onClick={this.downloadTxtFile}>Download txt</button>
             </Col>
-            <Col sm="2"></Col>
+            <Col sm="1"></Col>
+            <Col>
+              <Button type="button"
+                color="primary"
+                onClick={this.downloadTxtFile}
+                className="btn btn-block">
+                Download PDF
+                </Button>
+            </Col>
+            <Col sm="1"></Col>
           </Row>
         </FormGroup>
       </Form>
