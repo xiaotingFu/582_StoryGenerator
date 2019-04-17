@@ -12,7 +12,6 @@ import sys
 #         new_story += str(count) + title + "\n"
 #         count += 1
 #     return new_story
-print("Running python generator")
 #read json file
 d = {}
 with open('../db/tmp.json') as json_file:
