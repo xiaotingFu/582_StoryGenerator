@@ -1,4 +1,4 @@
-# import urllib.request as urllib2
+# import urllib.request
 import json
 import sys
 # def generator(stories):
@@ -12,12 +12,13 @@ import sys
 #         new_story += str(count) + title + "\n"
 #         count += 1
 #     return new_story
-print("Running python generator")
 #read json file
-d = {}
+storysetting = {}
 with open('../db/tmp.json') as json_file:
-    d = json.load(json_file)
-print(d)
+    storysetting = json.load(json_file)
+# call story generator to generate story...
+
+print('Harry bypassed the Great Hall, where those who were wounded were being treated by Madam Pomfrey. He didnt want her help or anyone elses for that matter, He climbed the stairs up to Gryffindor tower where he went to lay in his bed and waited for death.')
 sys.stdout.flush()
     # stories = {}
     # # print(d)
@@ -25,7 +26,7 @@ sys.stdout.flush()
     #     url = d[title]
     #     # print(title, url)
     #     story_content = ""
-    #     for line in urllib2.urlopen(url):
+    #     for line in urllib.request.urlopen(url):
     #         story_content += str(line)
     #     stories[title] = story_content
 

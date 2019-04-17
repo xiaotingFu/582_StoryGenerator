@@ -132,6 +132,14 @@ export default class Setting extends React.Component {
                 <option value={5} label="Highest"/>
               </Input>
             </Col>
+            <Col md={6}>
+              <Label for="storyLength">Story Length</Label>
+              <Input type="select" name="sLength" id="storyLength">
+                <option value="500" label="0~500"/>
+                <option value="1000" label="500~1000"/>
+                <option value="2000" label="1000~2000"/>
+              </Input>
+            </Col>
           </Row>
         </FormGroup>
         <FormGroup>

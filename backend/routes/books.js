@@ -14,6 +14,8 @@ horror:5
 boring:2
 violence:1
  */
+
+ //Backend support CORS
 class Story {
 
   constructor(book1, book2) {
@@ -24,6 +26,8 @@ class Story {
     this.horror = 1;
     this.boring = 1;
     this.violence = 1;
+    this.storylength = 10000;
+    this.urls = [];
   }
 
 }
@@ -47,6 +51,7 @@ function get_bookcontent(story, res) {
       console.error(err.message);
     }
     dict[row.title] = row.url;
+    story.urls.push(row.url);
   });
   db.close((err) => {
     if (err) {
@@ -54,7 +59,7 @@ function get_bookcontent(story, res) {
     }
     console.log(dict);
     console.log('Close the database connection.');
-    fs.writeFile("../db/tmp.json", JSON.stringify(dict), (err) => {
+    fs.writeFile("../db/tmp.json", JSON.stringify(story), (err) => {
       if (err) {
         console.error(err);
         return;
@@ -85,7 +90,8 @@ function get_bookcontent(story, res) {
 
     pyprog.stdout.on('data', function (data) {
         console.log(data.toString());
-        res.send(data);
+        var sendfile = {"story": data.toString()};
+        res.send(JSON.stringify(sendfile));
         res.end('end');
     });
   });
@@ -100,7 +106,7 @@ router.get('/', function (req, res, next) {
   story.horror = req.query.horror;
   story.boring = req.query.boring;
   story.violence = req.query.violence;
-
+  story.storylength = req.query.storylength;
   get_bookcontent(story, res);
 
 });
