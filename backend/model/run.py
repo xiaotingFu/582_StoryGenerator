@@ -13,10 +13,13 @@ import sys
 #         count += 1
 #     return new_story
 #read json file
-d = {}
+storysetting = {}
 with open('../db/tmp.json') as json_file:
-    d = json.load(json_file)
-print(d)
+    storysetting = json.load(json_file)
+
+# call story generator to generate story...
+
+print('Harry bypassed the Great Hall, where those who were wounded were being treated by Madam Pomfrey. He didnt want her help or anyone elses for that matter, He climbed the stairs up to Gryffindor tower where he went to lay in his bed and waited for death.')
 sys.stdout.flush()
     # stories = {}
     # # print(d)
