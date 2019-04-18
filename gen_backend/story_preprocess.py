@@ -55,6 +55,7 @@ def upload_file(file_stream, filename, content_type):
 
 def get_book_url(book1, book2):
     conn = sqlite3.connect('../db/db.sqlite3')
+
     sql = "select url from Story where book1 ='{b1}' AND book2 = '{b2}';".format(b1=book1, b2=book2)
     cursor = conn.execute(sql)
     urls = []
@@ -83,8 +84,7 @@ def get_book_pairs():
         if count > 0:
             book1, book2, occ = row[0], row[1], str(row[2])
             # print(book1 + " : " + book2 + " appears " + occ + " times")
-            pair = [book1, book2]
-            pair.sort()
+            pair = [book1, book2] 
             books.append(pair)
         count -= 1
     # print(books)
