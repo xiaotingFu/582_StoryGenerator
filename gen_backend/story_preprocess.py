@@ -155,6 +155,8 @@ def main():
     for book1, book2 in pairs:
         if book1 == "Harry Potter" and book2 == "Percy Jackson and the Olympians":
             continue
+        if DBHelper(book1, book2).isRecordExistSummary():
+            continue
         start_time = time.time()
         print("Generating for books " + book1 + " and " + book2)
         # 1. read book url
