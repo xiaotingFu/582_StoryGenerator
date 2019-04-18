@@ -7,7 +7,7 @@ import hashlib
 import six
 from Helper.DBHelper import DBHelper
 import re
-
+from collections import defaultdict
 # Google Cloud Setting
 PROJECT_ID = 'mongodb-236418'
 CLOUD_STORAGE_BUCKET = 'generated_fiction'
@@ -50,6 +50,28 @@ def upload_file(file_stream, filename, content_type):
 # from spacy import displacy
 # from collections import Counter
 # nlp = spacy.load("en_core_web_sm")
+
+def get_book_pairs():
+    """
+    select story from database make sure all combinition has more than three titles
+
+    get the book combinition that has the most stories
+
+    return a list of books    
+    """
+    import sqlite3
+    conn = sqlite3.connect('../db/db.sqlite3')
+    
+    sql = "select book1, book2, count(*) from Story group by book1, book2 HAVING count(*)> 10 ORDER BY count(*);"
+    cursor = conn.execute(sql)
+    # build a graph for book pairs
+    bookpairs = defaultdict(list)
+    for row in cursor:
+        bookpairs[row[0]].append(bookpairs[row[1]])
+        bookpairs[row[1]].append(bookpairs[row[0]])
+    print(bookpairs)
+    # search in the graph and delete the pair that are not fully-connected
+
 
 def readStory():
     with open('../db/tmp.json') as json_file:
@@ -117,4 +139,5 @@ def main():
 
 
 if __name__ == "__main__":
-    main()
+    # main()
+    get_book_pairs()

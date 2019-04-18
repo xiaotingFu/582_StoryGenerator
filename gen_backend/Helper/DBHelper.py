@@ -13,7 +13,6 @@ SQLite Database
         - book2
         - url
 """
-
 class DBHelper:
 
     def __init__(self, book1, book2):
@@ -21,12 +20,19 @@ class DBHelper:
         self.book2 = book2
         self.title = ""
         self.url = ""
-
+    
     def createConn(self):
         self.sqlite_file = '../db/db.sqlite3'
         self.conn = sqlite3.connect(self.sqlite_file)
         self.c = self.conn.cursor() 
-    
+    def executesql(self, sql):
+        self.createConn()
+        self.c.execute(sql)
+        data = self.c.fetchall()
+        self.conn.commit()
+        self.closeConn()
+        return data
+
     def closeConn(self):
         self.conn.commit()
         self.conn.close()
