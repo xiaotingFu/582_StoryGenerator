@@ -107,7 +107,7 @@ for first_book_column in book_columns:
                             pass
 
                         if title_type == 'en' and len(story_title) <= 100:
-                                db = DBHelper(parsename(book1), parsename(book2), parsename(story_title))
+                                db = DBHelper(parsename(book1), parsename(book2))
                                 if not db.isRecordExist():
                                     print("- Crawling story %s" % story_title)
                                     story_text = ""
@@ -152,6 +152,7 @@ for first_book_column in book_columns:
                                                 # upload file to google cloud and retrive its url
                                                 url = upload_file(story_text,crossover_category, story_title,'text/plain')
                                                 # update the url to database
+                                                db.title = parsename(story_title)
                                                 db.url = url
                                                 db.insert()
                                             except:
