@@ -165,10 +165,10 @@ def main():
         # 4. upload file to google cloud and save record to sqlite db
         uploadDB(book1, book2, story_content)
         elapsed_time = time.time() - start_time
-        print("Done in " + elapsed_time + " ms")
+        print("Done in {s} ms.".format(s=elapsed_time))
     total_elasped = time.time() - total_time
-    print("Finsh generation for " + len(pairs) + " book pairs in " + total_elasped + " ms")
-
+    print("Finsh generation for " + len(pairs) + " book pairs;")
+    print("Total done in {s} ms.".format(s=total_elasped))
 if __name__ == "__main__":
     # main()
     main()
