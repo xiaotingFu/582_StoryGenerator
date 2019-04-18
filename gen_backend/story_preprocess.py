@@ -7,7 +7,8 @@ import hashlib
 import six
 from Helper.DBHelper import DBHelper
 import re
-from collections import defaultdict
+import sqlite3
+import time
 # Google Cloud Setting
 PROJECT_ID = 'mongodb-236418'
 CLOUD_STORAGE_BUCKET = 'generated_fiction'
@@ -51,6 +52,16 @@ def upload_file(file_stream, filename, content_type):
 # from collections import Counter
 # nlp = spacy.load("en_core_web_sm")
 
+
+def get_book_url(book1, book2):
+    conn = sqlite3.connect('../db/db.sqlite3')
+    sql = "select url from Story where book1 ='{b1}' AND book2 = '{b2}';".format(b1=book1, b2=book2)
+    cursor = conn.execute(sql)
+    urls = []
+    for row in cursor:
+        urls.append(row[0])
+    return urls
+
 def get_book_pairs():
     """
     select story from database make sure all combinition has more than three titles
@@ -59,18 +70,28 @@ def get_book_pairs():
 
     return a list of books    
     """
-    import sqlite3
+    import collections
     conn = sqlite3.connect('../db/db.sqlite3')
-    
-    sql = "select book1, book2, count(*) from Story group by book1, book2 HAVING count(*)> 10 ORDER BY count(*);"
+    sql = "select book1, book2, count(*) from Story group by book1, book2 HAVING count(*)> 10 ORDER BY count(*) DESC;"
     cursor = conn.execute(sql)
     # build a graph for book pairs
-    bookpairs = defaultdict(list)
+    # bookpairs = collections.defaultdict(list)
+    print("Top 10 books")
+    count = 100
+    books= []
     for row in cursor:
-        bookpairs[row[0]].append(bookpairs[row[1]])
-        bookpairs[row[1]].append(bookpairs[row[0]])
-    print(bookpairs)
-    # search in the graph and delete the pair that are not fully-connected
+        if count > 0:
+            book1, book2, occ = row[0], row[1], str(row[2])
+            # print(book1 + " : " + book2 + " appears " + occ + " times")
+            pair = [book1, book2]
+            pair.sort()
+            books.append(pair)
+        count -= 1
+    # print(books)
+    # print(len(books))
+
+    conn.close()
+    return books
 
 
 def readStory():
@@ -127,17 +148,27 @@ def uploadDB(book1, book2, story_content):
 
 
 def main():
-    # 1. read story from nodejs output
-    url_list, book1, book2 = readStory()
-    # 2. generate summary
-    generate_summary(url_list)
-    # 3. clean summary
-    story_content = clean_summary()
-    print(story_content)
-    # 4. upload file to google cloud and save record to sqlite db
-    uploadDB(book1, book2, story_content)
-
+    print("=====================")
+    print("Start generator")
+    pairs = get_book_pairs()
+    total_time = time.time()
+    for book1, book2 in pairs:
+        start_time = time.time()
+        print("Generating for books " + book1 + " and " + book2)
+        # 1. read book url
+        url_list = get_book_url(book1, book2)
+        # 2. generate summary
+        generate_summary(url_list)
+        # 3. clean summary
+        story_content = clean_summary()
+        print(story_content)
+        # 4. upload file to google cloud and save record to sqlite db
+        uploadDB(book1, book2, story_content)
+        elapsed_time = time.time() - start_time
+        print("Done in " + elapsed_time + " ms")
+    total_elasped = time.time() - total_time
+    print("Finsh generation for " + len(pairs) + " book pairs in " + total_elasped + " ms")
 
 if __name__ == "__main__":
     # main()
-    get_book_pairs()
+    main()
