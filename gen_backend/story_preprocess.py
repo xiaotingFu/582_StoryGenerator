@@ -111,6 +111,7 @@ def main():
     generate_summary(url_list)
     # 3. clean summary
     story_content = clean_summary()
+    print(story_content)
     # 4. upload file to google cloud and save record to sqlite db
     uploadDB(book1, book2, story_content)
 
