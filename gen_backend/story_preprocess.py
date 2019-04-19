@@ -9,6 +9,7 @@ from Helper.DBHelper import DBHelper
 import re
 import sqlite3
 import time
+
 # Google Cloud Setting
 PROJECT_ID = 'mongodb-236418'
 CLOUD_STORAGE_BUCKET = 'generated_fiction'
@@ -104,19 +105,31 @@ def readStory():
 
 
 def generate_summary(url_list):
+    story_length_dictionary = {}
     story_content_list = []
     story_summary_list = []
     character_list = []
     for url in url_list:
         data = urlopen(url)
-        story_content_list.append(data.read().decode('utf-8'))
+        story_length_dictionary[url] = len(data.read().decode('utf-8'))
+
+    story_length_dictionary = sorted(story_length_dictionary.items(), key=lambda x: x[1])
+
+    if len(story_length_dictionary) > 5:
+        for i in range(5):
+            data = urlopen(story_length_dictionary[i][0])
+            story_content_list.append(data.read().decode('utf-8'))
+    else:
+        for i in range(len(story_length_dictionary)):
+            data = urlopen(story_length_dictionary[i][0])
+            story_content_list.append(data.read().decode('utf-8'))
 
     for story in story_content_list:
-        summary = summarize(story, words=100)
+        summary = summarize(story, ratio=0.1)
         story_summary_list.append(summary)
 
     summary_string = ". ".join(story_summary_list)
-    f = open('input.txt', 'w+')
+    f = open('input.txt', 'w')
     f.write(summary_string)
     f.close()
 
@@ -173,6 +186,7 @@ def main():
     total_elasped = time.time() - total_time
     print("Finsh generation for " + len(pairs) + " book pairs;")
     print("Total done in {s} ms.".format(s=total_elasped))
+
 if __name__ == "__main__":
     # main()
     main()
