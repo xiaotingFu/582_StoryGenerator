@@ -13,7 +13,7 @@ import time
 # Google Cloud Setting
 PROJECT_ID = 'mongodb-236418'
 CLOUD_STORAGE_BUCKET = 'generated_fiction'
-
+URL_NUM = 10
 
 def parsename(s):
     return " ".join(re.findall("[a-zA-Z]+", s))
@@ -115,8 +115,8 @@ def generate_summary(url_list):
 
     story_length_dictionary = sorted(story_length_dictionary.items(), key=lambda x: x[1])
 
-    if len(story_length_dictionary) > 5:
-        for i in range(5):
+    if len(story_length_dictionary) > URL_NUM:
+        for i in range(URL_NUM):
             data = urlopen(story_length_dictionary[i][0])
             story_content_list.append(data.read().decode('utf-8'))
     else:
@@ -125,7 +125,7 @@ def generate_summary(url_list):
             story_content_list.append(data.read().decode('utf-8'))
 
     for story in story_content_list:
-        summary = summarize(story, ratio=0.1)
+        summary = summarize(story, word_count=1000)
         story_summary_list.append(summary)
 
     summary_string = ". ".join(story_summary_list)
