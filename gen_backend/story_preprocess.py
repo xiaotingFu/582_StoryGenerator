@@ -125,7 +125,7 @@ def generate_summary(url_list):
             story_content_list.append(data.read().decode('utf-8'))
 
     for story in story_content_list:
-        summary = summarize(story, word_count=1000)
+        summary = summarize(story, words=1000)
         story_summary_list.append(summary)
 
     summary_string = ". ".join(story_summary_list)
