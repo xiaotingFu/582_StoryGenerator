@@ -14,6 +14,7 @@ import time
 PROJECT_ID = 'mongodb-236418'
 CLOUD_STORAGE_BUCKET = 'generated_fiction'
 URL_NUM = 10
+BOOK_PAIRS_NUM = 2000
 
 def parsename(s):
     return " ".join(re.findall("[a-zA-Z]+", s))
@@ -74,20 +75,17 @@ def get_book_pairs():
     """
     import collections
     conn = sqlite3.connect('../db/db.sqlite3')
-    sql = "select book1, book2, count(*) from Story group by book1, book2 HAVING count(*)> 10 ORDER BY count(*) DESC;"
+    sql = "select book1, book2, count(*) from Story group by book1, book2 HAVING count(*)>"+  URL_NUM + " ORDER BY count(*) DESC;"
     cursor = conn.execute(sql)
     # build a graph for book pairs
     # bookpairs = collections.defaultdict(list)
-    print("Top 10 books")
-    count = 100
+    print("Top 10 books") 
     books= []
     for row in cursor:
-        if count > 0:
-            book1, book2, occ = row[0], row[1], str(row[2])
-            # print(book1 + " : " + book2 + " appears " + occ + " times")
-            pair = [book1, book2] 
-            books.append(pair)
-        count -= 1
+        book1, book2, occ = row[0], row[1], str(row[2])
+        # print(book1 + " : " + book2 + " appears " + occ + " times")
+        pair = [book1, book2] 
+        books.append(pair)
     # print(books)
     # print(len(books))
 

@@ -15,18 +15,16 @@ def get_book_pairs():
     # build a graph for book pairs
     # bookpairs = collections.defaultdict(list)
     print("Top 10 books")
-    count = 100
+    count = 0
     books= []
-    for row in cursor:
-        if count > 0:
+    for row in cursor: 
             book1, book2, occ = row[0], row[1], str(row[2])
             # print(book1 + " : " + book2 + " appears " + occ + " times")
             pair = [book1, book2]
             pair.sort()
             books.append(pair)
-        count -= 1
-    # print(books)
-    # print(len(books))
+            count += 1 
+    print(len(books))
 
     conn.close()
     return books
