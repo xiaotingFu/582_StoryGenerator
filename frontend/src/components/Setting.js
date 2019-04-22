@@ -35,7 +35,7 @@ export default class Setting extends React.Component {
       horror: this.state.horror,
       boring: this.state.boring,
       violence: this.state.violence,
-      storylength: this.state.storylength,
+      // storylength: this.state.storylength,
     }
     console.log(params);
     let paramsArray = [];
@@ -135,7 +135,7 @@ export default class Setting extends React.Component {
                 <option value={5} label="Highest"/>
               </Input>
             </Col>
-            <Col md={6}>
+            {/* <Col md={6}>
               <Label for="storyLength">Story Length</Label>
               <Input type="select" name="sLength" id="storyLength"
                     value={this.state.storylength} onChange={this.handleChange("storylength")}>
@@ -143,7 +143,7 @@ export default class Setting extends React.Component {
                 <option value="10000" label="5000~10000"/>
                 <option value="20000" label="10000~20000"/>
               </Input>
-            </Col>
+            </Col> */}
           </Row>
         </FormGroup>
         <FormGroup>
