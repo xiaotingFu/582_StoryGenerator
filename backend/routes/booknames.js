@@ -13,7 +13,7 @@ function getBooknames(res, bookname){
         }
         console.log('Connected to the summary database.');
       });
-      var sql = `SELECT DISTINCT(book2) from Summary where book1='${story.book1}'`
+      var sql = `SELECT DISTINCT(book2) from Summary where book1='${bookname}'`
       db.each(sql, (err, row) => {
         if (err) {
           console.error(err.message);
@@ -36,3 +36,4 @@ router.get('/', function (req, res, next) {
   });
 
 module.exports = router;
+
