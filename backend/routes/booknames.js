@@ -34,3 +34,5 @@ router.get('/', function (req, res, next) {
     var bookname = req.query.bookname; // book name
     getBooknames(res, bookname);
   });
+
+module.exports = router;
