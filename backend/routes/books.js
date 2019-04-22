@@ -26,8 +26,7 @@ class Story {
     this.horror = 1;
     this.boring = 1;
     this.violence = 1;
-    this.storylength = 10000;
-    this.urls = [];
+    this.url = [];
   }
 
 }
@@ -38,7 +37,6 @@ class Story {
      */
 function get_bookcontent(story, res) {
   //connect to database
-  var dict = {};
   let db = new sqlite3.Database(dbPath, sqlite3.OPEN_READWRITE, (err) => {
     if (err) {
       console.error(err.message);
@@ -46,18 +44,17 @@ function get_bookcontent(story, res) {
     console.log('Connected to the story database.');
   });
 
-  db.each(`SELECT title, url from Story where book1='${story.book1}' AND book2='${story.book2}'`, (err, row) => {
+  db.each(`SELECT url from Summary where book1='${story.book1}' AND book2='${story.book2}'`, (err, row) => {
     if (err) {
       console.error(err.message);
     }
-    dict[row.title] = row.url;
-    story.urls.push(row.url);
+    //update the url to be the summary url
+    story.url = row.url;
   });
   db.close((err) => {
     if (err) {
       console.error(err.message);
     }
-    console.log(dict);
     console.log('Close the database connection.');
     fs.writeFile("../db/tmp.json", JSON.stringify(story), (err) => {
       if (err) {
@@ -97,7 +94,6 @@ router.get('/', function (req, res, next) {
   story.horror = req.query.horror;
   story.boring = req.query.boring;
   story.violence = req.query.violence;
-  story.storylength = req.query.storylength;
   get_bookcontent(story, res);
 });
 

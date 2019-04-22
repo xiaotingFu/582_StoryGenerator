@@ -5,20 +5,20 @@ const path = require('path');
 const dbPath = path.resolve(__dirname, '../../db/db.sqlite3');
 var fs = require("fs");
 
-function getBooknames(res){
+function getBooknames(res, bookname){
     var booknames = [];
     let db = new sqlite3.Database(dbPath, sqlite3.OPEN_READWRITE, (err) => {
         if (err) {
           console.error(err.message);
         }
-        console.log('Connected to the story database.');
+        console.log('Connected to the summary database.');
       });
-    
-      db.each(`SELECT DISTINCT(book1) from Story`, (err, row) => {
+      var sql = `SELECT DISTINCT(book2) from Summary where book1='${story.book1}'`
+      db.each(sql, (err, row) => {
         if (err) {
           console.error(err.message);
         }
-        booknames.push(row.book1);
+        booknames.push(row.book2);
       });
       db.close((err) => {
         if (err) {
@@ -31,6 +31,6 @@ function getBooknames(res){
 
 }
 router.get('/', function (req, res, next) {
-
-    res.send()
+    var bookname = req.query.bookname; // book name
+    getBooknames(res, bookname);
   });
