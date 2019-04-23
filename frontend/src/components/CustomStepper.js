@@ -48,11 +48,13 @@ class CustomStepper extends React.Component {
         <Stepper activeStep={this.props.activeStep}>
           {steps.map((label, index) => {
             return (
-              <Step key={label} onClick={() => {this.setState({
-                    activeStep: index,
-                  });
-                  this.props.changeActiveStep(index);
-                }}>
+              <Step key={label} 
+              // onClick={() => {this.setState({
+              //       activeStep: index,
+              //     });
+              //     this.props.changeActiveStep(index);
+              //   }}
+                >
                 <StepLabel>{label}</StepLabel>
               </Step>
             );

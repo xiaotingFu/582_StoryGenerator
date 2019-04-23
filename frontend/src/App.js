@@ -6,6 +6,7 @@ import CustomStepper from "./components/CustomStepper";
 import Search from "./components/Search";
 import Setting from "./components/Setting";
 import Story from "./components/Story";
+
 import { Row, Col, Card } from 'reactstrap';
 
 class App extends Component {
@@ -13,9 +14,11 @@ class App extends Component {
     super(props);
     this.state = {
       query: "",
-      activeStep: 2,
+      activeStep: 0,
+      response: null,
       firstNovel: null,
-      secondNovel: null
+      secondNovel: null,
+      finalNovel: null,
     };
   }
 
@@ -39,17 +42,30 @@ class App extends Component {
     this.setState({secondNovel});
   }
 
+  setFinalNovel(finalNovel) {
+    this.setState({finalNovel});
+  }
+
+  setResponse(response) {
+    this.setState(response);
+  }
+
   renderByActiveStep(step) {
     switch (step) {
       case 0:
         return <Search changeFirstNovel={(firstNovel)=>this.changeFirstNovel(firstNovel)} 
                       changeSecondNovel={(secondNovel)=>this.changeSecondNovel(secondNovel)} 
-                      changeActiveStep={step=>this.changeActiveStep(step)}></Search>;
+                      changeActiveStep={step=>this.changeActiveStep(step)}
+                      setResponse={res=>this.setResponse(res)}></Search>;
       case 1:
-        return <Setting changeActiveStep={step=>this.changeActiveStep(step)}></Setting>;
+        return <Setting changeActiveStep={step=>this.changeActiveStep(step)}
+                      firstNovel={this.state.firstNovel}
+                      secondNovel={this.state.secondNovel}
+                      setFinalNovel={novel=>this.setFinalNovel(novel)}></Setting>;
       case 2:
         return <Story firstNovel={this.state.firstNovel} 
                       secondNovel={this.state.secondNovel}
+                      finalNovel={this.state.finalNovel}
                       changeActiveStep={step=>this.changeActiveStep(step)}></Story>;
       default:
         break;

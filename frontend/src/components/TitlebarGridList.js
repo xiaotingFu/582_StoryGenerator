@@ -55,15 +55,6 @@ class TitlebarGridList extends React.Component {
         <GridList cellHeight={"auto"} className={classes.gridList}>
           {this.props.suggestions.map(title => (
             <GridListTile key={title.label}>
-              <img src={title.imgLink} alt={title.label} />
-              <GridListTileBar
-                title={title.label}
-                subtitle={<span>by: {title.author}</span>}
-                actionIcon={
-                  <IconButton className={classes.icon}>
-                  </IconButton>
-                }
-              />
             </GridListTile>
           ))}
         </GridList>

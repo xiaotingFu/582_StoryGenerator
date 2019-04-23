@@ -1,3 +1,4 @@
 {
-    "python.pythonPath": "/Users/yrao3/.local/share/virtualenvs/582_StoryGenerator-NrbpY_LJ/bin/python"
+    "python.pythonPath": "/usr/local/opt/python/bin/python3.7",
+    "python.linting.pylintEnabled": true
 }
