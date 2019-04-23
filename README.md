@@ -1,6 +1,6 @@
-# CSC582 Create Your Own Story (CYOS)
+# Create Your Own Story (CYOS)
 
-This is a CYOS group, we have created a crossover fan-fiction generator.
+This is CYOS group, we have created a crossover fan-fiction generator using 
 
 ## Defintion of Crossover fan-fiction
 Crossover fan-fiction is something a fan for both book1 and book2 want to write a story where 
@@ -12,17 +12,33 @@ Our system has the following components:
 2. Website that ask user to input their choice and give them customized feedback
 3. Story_generator that based on user input and stories in the database, generate stories.
 
-### Web Crawler
+## Installation Guide
+The following installation guide for MacOS or linux-based system (Ubuntu)
 ```bash
-/backend/crawler.py
-```
+# Clone the repository
+git clone https://github.com/xiaotingFu/582_StoryGenerator
 
 
-### Website 
-```bash
-/backend # node.js backend 
-/frontend # react frontend
-/db # sqlite database (lightweight)
-/gen_backend # algorithms for story generation
+# Start python virtual environment
+virtualenv -p python3 myenv
 
+# start virtual env
+source venv/bin/activate
+
+# Install the dependencies for this project
+pip install -r "requirements.txt"
+
+# Deploy the system backend
+cd backend
+
+# install dependencies for node
+npm install
+
+# start backend server
+npm start
+
+# start frontend server
+cd frontend
+npm install
+npm start
 ```

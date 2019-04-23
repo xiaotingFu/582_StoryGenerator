@@ -2,8 +2,10 @@
 
 The Web Crawler use Python BeautifulSoup4 libary to extract fanfictions.
 
-
-## Backend with Django
+## Google cloud Setup
+```
+export GOOGLE_APPLICATION_CREDENTIALS=""
+```
 
 ## Integration with frontend
 
