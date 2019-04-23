@@ -17,6 +17,10 @@ const suggestions = books.map(book => ({
   label: book.title,
 }));
 
+// suggestions.forEach((suggestion)=>{
+//   suggestion.value
+// })
+
 const styles = theme => ({
   icon: {
     margin: theme.spacing.unit,
@@ -43,6 +47,9 @@ class Search extends React.Component {
     firstNovel: null,
     secondNovel: null,
     collapse: false,
+    secondOptions: [],
+    secondSelectPlaceholder: "Select your first novel first",
+    fetchedBooks: []
   }
 
   componentDidMount() {
@@ -53,8 +60,18 @@ class Search extends React.Component {
       [name]: value,
     });
     if (value) {
+      console.log("not empty");
       this.loadNovelFromServer(name, value.label);
+    }else if(name=="firstNovel"){
+      console.log("1 is empty");
+      this.state.secondNovel=null;
+      this.state.secondOptions=[];
+      this.state.secondSelectPlaceholder="Select your first novel first";
+    }else if(name=="secondNovel"){
+      console.log("2 is empty");
+      this.state.secondOptions = this.state.fetchedBooks;
     }
+      
   }
 
   toggle = () => {
@@ -123,6 +140,51 @@ class Search extends React.Component {
       .catch(function(err) {
         console.log('Fetch Error :-S', err);
       });
+
+      let url = Config.url+"/booknames";
+
+      let params = {
+        bookname: bookName,
+        // storylength: this.state.storylength,
+      }
+
+      console.log(params);
+      let paramsArray = [];
+      Object.keys(params).forEach(key => paramsArray.push(key + '=' + params[key]))
+      if (url.search(/\?/) === -1) {
+          url += '?' + paramsArray.join('&')
+      } else {
+          url += '&' + paramsArray.join('&')
+      }
+      
+      // fetch generated story
+      fetch(url, {
+        method: 'GET',
+        headers: new Headers({
+          'Content-Type': 'application/json',
+        }),
+        mode: 'cors'
+      })
+      .then((resp) => resp.json())
+      .catch((error)=>{console.log(error)})
+      .then((response) => {
+        if (!response) {
+          // alert('Ooops, there is something wrong with your network!');
+          return;
+        }   
+        if(whichNovel=="firstNovel"){     
+          console.log(response);
+          
+          this.state.secondSelectPlaceholder="Select second novel";
+          this.state.secondOptions= response.map(book => ({
+            value: book,
+            label: book,
+          }));
+          this.state.fetchedBooks = this.state.secondOptions;
+        }
+      });
+          
+
   }
 
   learnMore(n) {
@@ -161,6 +223,7 @@ class Search extends React.Component {
                   isClearable={true}
                   onChange={this.handleChange('firstNovel')}
                   placeholder="Select first novel"
+                  value={this.state.firstNovel}
                 />
               </Col>
               <Col sm="2">
@@ -171,10 +234,11 @@ class Search extends React.Component {
                   key="secondSelect"
                   classes={classes}
                   styles={selectStyles}
-                  options={suggestions}
+                  options={this.state.secondOptions}
                   isClearable={true}
                   onChange={this.handleChange('secondNovel')}
-                  placeholder="Select second novel"
+                  placeholder= {this.state.secondSelectPlaceholder}
+                  value={this.state.secondNovel}
                 />
               </Col>
               <Col sm="1"></Col>
