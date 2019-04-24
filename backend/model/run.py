@@ -18,12 +18,9 @@ from nltk.corpus import wordnet as wn
 from pywsd.lesk import simple_lesk as disambiguate
 
 from lexrank import STOPWORDS, LexRank
-import os
-print(sys.version)
-# print("Start running the story generator")
-print("start generation...")
-nlp = spacy.load('en_vectors_web_lg')
 
+nlp = spacy.load('en_vectors_web_lg')
+print("function is called")
 # Penn TreeBank POS tags:
 # http://www.ling.upenn.edu/courses/Fall_2003/ling001/penn_treebank_pos.html
 supported_pos_tags = [
@@ -41,7 +38,7 @@ supported_pos_tags = [
     'NN',   # Noun, singular or mass
     'NNS',  # Noun, plural
     'NNP',  # Proper noun, singular
-    'NNPS',  # Proper noun, plural
+    'NNPS', # Proper noun, plural
     # 'PDT',  # Predeterminer
     # 'POS',  # Possessive ending
     # 'PRP',  # Personal pronoun
@@ -64,7 +61,6 @@ supported_pos_tags = [
     # 'WP$',  # Possessive wh-pronoun
     # 'WRB',  # Wh-adverb
 ]
-
 
 @attr.s
 class SubstitutionCandidate:
@@ -102,7 +98,7 @@ def _synonym_prefilter_fn(token, synonym):
 def _generate_synonym_candidates(doc, disambiguate=False, rank_fn=None):
 
     if rank_fn is None:
-        rank_fn = vsm_similarity
+        rank_fn=vsm_similarity
 
     candidates = []
     for position, token in enumerate(doc):
@@ -112,7 +108,7 @@ def _generate_synonym_candidates(doc, disambiguate=False, rank_fn=None):
             if disambiguate:
                 try:
                     synset = disambiguate(
-                        doc.text, token.text, pos=wordnet_pos)
+                           doc.text, token.text, pos=wordnet_pos)
                     wordnet_synonyms = synset.lemmas()
                 except:
                     continue
@@ -123,22 +119,21 @@ def _generate_synonym_candidates(doc, disambiguate=False, rank_fn=None):
 
             synonyms = []
             for wordnet_synonym in wordnet_synonyms:
-                spacy_synonym = nlp(
-                    wordnet_synonym.name().replace('_', ' '))[0]
+                spacy_synonym = nlp(wordnet_synonym.name().replace('_', ' '))[0]
                 synonyms.append(spacy_synonym)
 
             synonyms = filter(partial(_synonym_prefilter_fn, token),
                               synonyms)
             synonyms = reversed(sorted(synonyms,
-                                       key=partial(rank_fn, doc, token)))
+                                key=partial(rank_fn, doc, token)))
 
             for rank, synonym in enumerate(synonyms):
                 candidate_word = synonym.text
                 candidate = SubstitutionCandidate(
-                    token_position=position,
-                    similarity_rank=rank,
-                    original_token=token,
-                    candidate_word=candidate_word)
+                        token_position=position,
+                        similarity_rank=rank,
+                        original_token=token,
+                        candidate_word=candidate_word)
                 candidates.append(candidate)
 
         return candidates
@@ -163,8 +158,7 @@ def _compile_perturbed_tokens(doc, accepted_candidates):
 
 def perturb_text(doc, use_typos=False, rank_fn=None, heuristic_fn=None, halt_condition_fn=None, verbose=False):
 
-    heuristic_fn = heuristic_fn or (
-        lambda _, candidate: candidate.similarity_rank)
+    heuristic_fn = heuristic_fn or (lambda _, candidate: candidate.similarity_rank)
     halt_condition_fn = halt_condition_fn or (lambda perturbed_text: False)
     candidates = _generate_synonym_candidates(doc, rank_fn=rank_fn)
 
@@ -175,10 +169,10 @@ def perturb_text(doc, use_typos=False, rank_fn=None, heuristic_fn=None, halt_con
     #     print('Got {} candidates'.format(len(candidates)))
 
     sorted_candidates = zip(
-        map(partial(heuristic_fn, perturbed_text), candidates),
-        candidates)
+            map(partial(heuristic_fn, perturbed_text), candidates),
+            candidates)
     sorted_candidates = list(sorted(sorted_candidates,
-                                    key=lambda t: t[0]))
+            key=lambda t: t[0]))
 
     while len(sorted_candidates) > 0 and not halt_condition_fn(perturbed_text):
         score, candidate = sorted_candidates.pop()
@@ -192,16 +186,16 @@ def perturb_text(doc, use_typos=False, rank_fn=None, heuristic_fn=None, halt_con
             #     print('Candidate score:', heuristic_fn(perturbed_text, candidate))
             #     print('Candidate accepted.')
             perturbed_text = ' '.join(
-                _compile_perturbed_tokens(doc, accepted_candidates))
+                    _compile_perturbed_tokens(doc, accepted_candidates))
 
             if len(sorted_candidates) > 0:
                 _, candidates = zip(*sorted_candidates)
                 sorted_candidates = zip(
-                    map(partial(heuristic_fn, perturbed_text),
-                        candidates),
-                    candidates)
+                        map(partial(heuristic_fn, perturbed_text),
+                            candidates),
+                        candidates)
                 sorted_candidates = list(sorted(sorted_candidates,
-                                                key=lambda t: t[0]))
+                        key=lambda t: t[0]))
     return perturbed_text
 
 
@@ -223,7 +217,6 @@ def get_filler_sentences(path):
 
 with open('../db/tmp.json') as json_file:
     data = json.load(json_file)
-    print(data)
     url = data['url']
     romance_rating = data['romance']
     boring_rating = data['boring']
@@ -254,28 +247,18 @@ num_violence = (((int(violence_rating)/5)*50)/100) * len(boring_sentences)
 
 
 lxr = LexRank(paraphrase_summary, stopwords=STOPWORDS['en'])
-boring_scores_cont = lxr.rank_sentences(
-    boring_sentences, threshold=None, fast_power_method=True)
-cliche_scores_cont = lxr.rank_sentences(
-    cliche_sentences, threshold=None, fast_power_method=True)
-horror_scores_cont = lxr.rank_sentences(
-    horror_sentences, threshold=None, fast_power_method=True)
-romance_scores_cont = lxr.rank_sentences(
-    romance_sentences, threshold=None, fast_power_method=True)
-violence_scores_cont = lxr.rank_sentences(
-    violence_sentences, threshold=None, fast_power_method=True)
+boring_scores_cont = lxr.rank_sentences(boring_sentences, threshold=None, fast_power_method=True)
+cliche_scores_cont = lxr.rank_sentences(cliche_sentences, threshold=None, fast_power_method=True)
+horror_scores_cont = lxr.rank_sentences(horror_sentences, threshold=None, fast_power_method=True)
+romance_scores_cont = lxr.rank_sentences(romance_sentences, threshold=None, fast_power_method=True)
+violence_scores_cont = lxr.rank_sentences(violence_sentences, threshold=None, fast_power_method=True)
 
 
-boring_index = sorted(range(len(boring_scores_cont)),
-                      key=lambda i: boring_scores_cont[i])[-int(num_boring):]
-cliche_index = sorted(range(len(cliche_scores_cont)),
-                      key=lambda i: cliche_scores_cont[i])[-int(num_cliche):]
-horror_index = sorted(range(len(horror_scores_cont)),
-                      key=lambda i: horror_scores_cont[i])[-int(num_horror):]
-romance_index = sorted(range(len(romance_scores_cont)),
-                       key=lambda i: romance_scores_cont[i])[-int(num_romance):]
-violence_index = sorted(range(len(violence_scores_cont)),
-                        key=lambda i: violence_scores_cont[i])[-int(num_violence):]
+boring_index = sorted(range(len(boring_scores_cont)), key=lambda i: boring_scores_cont[i])[-int(num_boring):]
+cliche_index = sorted(range(len(cliche_scores_cont)), key=lambda i: cliche_scores_cont[i])[-int(num_cliche):]
+horror_index = sorted(range(len(horror_scores_cont)), key=lambda i: horror_scores_cont[i])[-int(num_horror):]
+romance_index = sorted(range(len(romance_scores_cont)), key=lambda i: romance_scores_cont[i])[-int(num_romance):]
+violence_index = sorted(range(len(violence_scores_cont)), key=lambda i: violence_scores_cont[i])[-int(num_violence):]
 
 add_boring_sentence = []
 add_cliche_sentence = []
@@ -287,20 +270,15 @@ add_violence_sentence = []
 def prepare_sentences(list_of_sentence, index, sentence_type):
     for value in index:
         if sentence_type == 'boring':
-            add_boring_sentence.append(
-                "%%SB%%"+str(list_of_sentence[value].rstrip())+"%%EB%%")
+            add_boring_sentence.append("%%SB%%"+str(list_of_sentence[value].rstrip())+"%%EB%%")
         elif sentence_type == 'cliche':
-            add_cliche_sentence.append(
-                "%%SC%%"+str(list_of_sentence[value].rstrip())+"%%EC%%")
+            add_cliche_sentence.append("%%SC%%"+str(list_of_sentence[value].rstrip())+"%%EC%%")
         elif sentence_type == 'horror':
-            add_horror_sentence.append(
-                "%%SH%%"+str(list_of_sentence[value].rstrip())+"%%EH%%")
+            add_horror_sentence.append("%%SH%%"+str(list_of_sentence[value].rstrip())+"%%EH%%")
         elif sentence_type == 'romance':
-            add_romance_sentence.append(
-                "%%SR%%"+str(list_of_sentence[value].rstrip())+"%%ER%%")
+            add_romance_sentence.append("%%SR%%"+str(list_of_sentence[value].rstrip())+"%%ER%%")
         elif sentence_type == 'violence':
-            add_violence_sentence.append(
-                "%%SV%%"+str(list_of_sentence[value].rstrip())+"%%EV%%")
+            add_violence_sentence.append("%%SV%%"+str(list_of_sentence[value].rstrip())+"%%EV%%")
 
 
 prepare_sentences(boring_sentences, boring_index, 'boring')
@@ -313,8 +291,7 @@ prepare_sentences(violence_sentences, violence_index, 'violence')
 def add_final_sentences(sentence_list):
     summary_length = len(paraphrase_summary)
     for i in range(len(sentence_list)):
-        paraphrase_summary.insert(random.randint(
-            0, summary_length), sentence_list[i])
+        paraphrase_summary.insert(random.randint(0, summary_length), sentence_list[i])
 
 
 add_final_sentences(add_boring_sentence)
@@ -323,7 +300,12 @@ add_final_sentences(add_horror_sentence)
 add_final_sentences(add_romance_sentence)
 add_final_sentences(add_violence_sentence)
 
-with open('../db/output.txt', 'w', encoding='utf-8') as final_story:
-    final_story.write(' '.join(paraphrase_summary))
+# with open('../db/output.txt', 'w', encoding='utf-8') as final_story:
+#     final_story.write(' '.join(paraphrase_summary))
 
-# print(' '.join(paraphrase_summary))
+# with open('../db/output.txt') as f:
+#     story = f.read()
+#     print(story)
+
+print(' '.join(paraphrase_summary))
+# sys.stdout.flush()
