@@ -23,7 +23,7 @@ from lexrank import STOPWORDS, LexRank
 
 
 nlp = spacy.load('en_vectors_web_lg')
-print("function is called")
+
 # Penn TreeBank POS tags:
 # http://www.ling.upenn.edu/courses/Fall_2003/ling001/penn_treebank_pos.html
 supported_pos_tags = [
@@ -220,6 +220,7 @@ def get_filler_sentences(path):
 
 with open('../db/tmp.json') as json_file:
     data = json.load(json_file)
+    print(data)
     url = data['url']
     romance_rating = data['romance']
     boring_rating = data['boring']
@@ -311,4 +312,4 @@ add_final_sentences(add_violence_sentence)
 #     print(story)
 
 print(' '.join(paraphrase_summary))
-# sys.stdout.flush()
+sys.stdout.flush()
