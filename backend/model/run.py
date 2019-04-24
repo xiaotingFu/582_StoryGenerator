@@ -10,6 +10,8 @@ import nltk
 import spacy
 import re
 
+print("function is called")
+
 from collections import OrderedDict
 from functools import partial
 from nltk.tokenize import word_tokenize
@@ -18,7 +20,7 @@ from nltk.corpus import wordnet as wn
 from pywsd.lesk import simple_lesk as disambiguate
 
 from lexrank import STOPWORDS, LexRank
-print("Node is connection to this python file")
+
 
 nlp = spacy.load('en_vectors_web_lg')
 print("function is called")
