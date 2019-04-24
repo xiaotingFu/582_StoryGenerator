@@ -68,16 +68,7 @@ function get_bookcontent(story, res) {
     // const pyprog = spawn('python', ['../gen_backend/story_preprocess.py']);
     const pyprog = spawn('python', ['model/run.py']);
     pyprog.stdout.on('data', function (data) {
-        //console.log(data.toString());
-        // var storyfile = '../db/output.txt';
         var story_content = data;
-        // First I want to read the file
-        // fs.readFile(storyfile, function read(err, data) {
-        //     if (err) {
-        //         throw err;
-        //     }
-        //     story_content = data;
-        // });
         console.log(story_content.toString())
         var sendfile = {"story": story_content.toString()};
         res.send(JSON.stringify(sendfile));
