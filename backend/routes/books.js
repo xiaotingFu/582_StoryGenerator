@@ -74,7 +74,7 @@ function get_bookcontent(story, res) {
     fs.readFile('../db/output.txt', {encoding: 'utf-8'}, function(err,data){
       if (!err) {
           console.log('received data: ' + data);
-          res.send(JSON.stringify(sendfile));
+          res.send(JSON.stringify(data));
           res.end('end');
       } else {
           console.log(err);
