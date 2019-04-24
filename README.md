@@ -27,6 +27,10 @@ source venv/bin/activate
 
 # Install the dependencies for this project
 pip install -r "requirements.txt"
+python gen_backend/init.py
+
+# Deploy story_generator
+
 
 # Deploy the system backend
 cd backend
@@ -41,4 +45,5 @@ npm start
 cd frontend
 npm install
 npm start
+
 ```
