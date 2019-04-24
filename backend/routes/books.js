@@ -4,6 +4,7 @@ var router = express.Router();
 const path = require('path');
 const dbPath = path.resolve(__dirname, '../../db/db.sqlite3');
 var fs = require("fs");
+const {spawn} = require('child_process');
 /**
  * Test POST
 book1:Harry Potter
@@ -35,6 +36,18 @@ class Story {
      * Get the story url and send the data to the generator
      * Save the temp data to a json file
      */
+
+    async function generate_story(res) {
+      const filePath = 'mode/run_test.py';
+      console.log('INPUT: '+filePath);
+    
+      const childProcess = spawn('python', [filePath],
+        {stdio: [process.stdin, process.stdout, process.stderr]}); // (A)
+    
+      await onExit(childProcess); // (B)
+    
+      console.log('### DONE');
+    }
 function get_bookcontent(story, res) {
   //connect to database
   let db = new sqlite3.Database(dbPath, sqlite3.OPEN_READWRITE, (err) => {
@@ -65,12 +78,14 @@ function get_bookcontent(story, res) {
     });
     //a dictionary
     // const { spawn } = require('child_process');
-    var child = require('child_process').exec('python model/run.py')
-    child.stdout.pipe(process.stdout);
-    child.on('exit', function() {
-      process.exit()
-    });
-
+    // var child = require('child_process').exec('python model/run.py')
+    // child.stdout.pipe(process.stdout);
+    // child.on('exit', function() {
+    //   process.exit()
+    // });
+    // var execSync = require('exec-sync');
+    // var user = execSync('python model/run.py');
+    generate_story(res);
     fs.readFile('../db/output.txt', {encoding: 'utf-8'}, function(err,data){
       if (!err) {
           console.log('received data: ' + data);
