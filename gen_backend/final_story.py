@@ -1,3 +1,4 @@
+#!/usr/bin/env python
 import json
 from urllib.request import urlopen
 import random
@@ -10,7 +11,6 @@ import re
 
 from collections import OrderedDict
 from functools import partial
-
 from nltk.tokenize import word_tokenize
 from nltk.tag import pos_tag
 from nltk.corpus import wordnet as wn
@@ -18,9 +18,7 @@ from pywsd.lesk import simple_lesk as disambiguate
 
 from lexrank import STOPWORDS, LexRank
 
-
 nlp = spacy.load('en_vectors_web_lg')
-
 
 # Penn TreeBank POS tags:
 # http://www.ling.upenn.edu/courses/Fall_2003/ling001/penn_treebank_pos.html
