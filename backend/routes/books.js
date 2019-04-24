@@ -1,4 +1,3 @@
-#!/usr/bin/env python3
 const sqlite3 = require('sqlite3').verbose();
 var express = require('express');
 var router = express.Router();
@@ -42,8 +41,12 @@ class Story {
     async function generate_story(res) {
       const filePath = 'model/run.py';
       console.log('INPUT: '+filePath);
-
-      PythonShell.run(filePath, null, function (err) {
+      var options = {
+        mode: 'text',
+        pythonPath: '/home/xiaot_fu/anaconda3/bin/python3',
+        scriptPath: '.'
+      };
+      PythonShell.run(filePath, options, function (err) {
         if (err) throw err;
         console.log('finished');
       });
