@@ -5,6 +5,7 @@ const path = require('path');
 const dbPath = path.resolve(__dirname, '../../db/db.sqlite3');
 var fs = require("fs");
 const {spawn} = require('child_process');
+const {PythonShell}= require('python-shell');
 /**
  * Test POST
 book1:Harry Potter
@@ -40,7 +41,6 @@ class Story {
     async function generate_story(res) {
       const filePath = 'model/run.py';
       console.log('INPUT: '+filePath);
-      import {PythonShell} from 'python-shell';
 
       PythonShell.run(filePath, null, function (err) {
         if (err) throw err;
