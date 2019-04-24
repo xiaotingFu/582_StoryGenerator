@@ -1,3 +1,4 @@
+#!/usr/bin/python3
 const sqlite3 = require('sqlite3').verbose();
 var express = require('express');
 var router = express.Router();
