@@ -38,7 +38,7 @@ class Story {
      * Save the temp data to a json file
      */
 
-    async function generate_story() {
+    async function generate_story(res) {
       const filePath = 'model/run.py';
       console.log('INPUT: '+filePath);
       var options = {
@@ -108,7 +108,7 @@ function get_bookcontent(story, res) {
     // var execSync = require('exec-sync');
     // var user = execSync('python model/run.py');
     // generate_story();
-    generate_story();
+    generate_story(res);
     // fs.readFile('../db/output.txt', {encoding: 'utf-8'}, function(err,data){
     //   if (!err) {
     //       console.log('received data: ' + data);
