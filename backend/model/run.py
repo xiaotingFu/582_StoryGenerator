@@ -18,6 +18,7 @@ from nltk.corpus import wordnet as wn
 from pywsd.lesk import simple_lesk as disambiguate
 
 from lexrank import STOPWORDS, LexRank
+import os
 
 # print("Start running the story generator")
 print("start generation...")

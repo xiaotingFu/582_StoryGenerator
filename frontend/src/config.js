@@ -1,3 +1,3 @@
 export const Config = {
-    url:"http://35.186.175.79"
+    url:"http://34.73.85.215"
 }
