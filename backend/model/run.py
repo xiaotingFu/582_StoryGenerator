@@ -1,11 +1,4 @@
 #!/usr/bin/env python
-from lexrank import STOPWORDS, LexRank
-from pywsd.lesk import simple_lesk as disambiguate
-from nltk.corpus import wordnet as wn
-from nltk.tag import pos_tag
-from nltk.tokenize import word_tokenize
-from functools import partial
-from collections import OrderedDict
 import json
 import sys
 from urllib.request import urlopen
@@ -16,6 +9,15 @@ import attr
 import nltk
 import spacy
 import re
+
+from collections import OrderedDict
+from functools import partial
+from nltk.tokenize import word_tokenize
+from nltk.tag import pos_tag
+from nltk.corpus import wordnet as wn
+from pywsd.lesk import simple_lesk as disambiguate
+
+from lexrank import STOPWORDS, LexRank
 
 # print("Start running the story generator")
 
