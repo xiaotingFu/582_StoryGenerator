@@ -1,6 +1,6 @@
 # Create Your Own Story (CYOS)
 
-This is CYOS group, we have created a crossover fan-fiction generator using 
+This is CYOS group, we have created a crossover fan-fiction generator using a Web-Crawler, a textrank algorithm, and NLP techniques using the Stanford NLTK Library.
 
 ## Defintion of Crossover fan-fiction
 Crossover fan-fiction is something a fan for both book1 and book2 want to write a story where 
