@@ -58,7 +58,8 @@ function onExit(process, res){
 
   fs.readFile('../db/output.txt', {encoding: 'utf-8'}, function(err,data){
     if (!err) {
-        console.log('received data: ' + data);
+        // console.log('received data: ' + data);
+        console.log("data received");
         var sendfile = {"story": data.toString()};
         res.send(JSON.stringify(sendfile));
         res.end('end');
