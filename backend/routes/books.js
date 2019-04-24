@@ -65,7 +65,7 @@ function get_bookcontent(story, res) {
     });
     //a dictionary
     const { spawn } = require('child_process');
-    const pyprog = spawn('python', ['mode/run.py']);
+    const pyprog = spawn('python', ['mode/run_test.py']);
     // const pyprog = spawn('python', ['model/run.py']);
     // const pyprog2 = spawn('python', ['../gen_backend/final_story.py']);
     pyprog.stdout.on('data', function (data) {
