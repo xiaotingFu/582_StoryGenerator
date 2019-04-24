@@ -5,7 +5,8 @@ import os
 # import time
 print("Start running the story generator")
 
-p = subprocess.Popen(["python model/run.py"], shell=True, stdout=subprocess.PIPE, stderr=subprocess.STDOUT)
+# p = subprocess.Popen(["python model/run.py"], shell=True, stdout=subprocess.PIPE, stderr=subprocess.STDOUT)
+p = subprocess.Popen(["python model/run.py"])
 pvar = p.wait()
 print(pvar)
 with open('../db/output.txt') as f:
