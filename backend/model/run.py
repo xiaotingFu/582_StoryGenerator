@@ -17,7 +17,7 @@ import nltk
 import spacy
 import re
 
-
+print("Start running the story generator")
 
 nlp = spacy.load('en_vectors_web_lg')
 
