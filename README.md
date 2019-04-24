@@ -16,6 +16,7 @@ Our system has the following components:
 
 ## Documentation of Algorithms
 The complete documentation of various algorithms used for this program can be found here-:
+https://docs.google.com/document/d/1uoYWMhUhkKGU3i7TvfOBdxj0fypkPVmedIv24BwWh6A/edit?usp=sharing
 
 ## Installation Guide
 The following installation guide for MacOS or linux-based system (Ubuntu)
