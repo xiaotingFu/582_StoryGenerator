@@ -38,7 +38,7 @@ class Story {
      * Save the temp data to a json file
      */
 
-    async function generate_story(res) {
+    async function generate_story() {
       const filePath = 'model/run.py';
       console.log('INPUT: '+filePath);
       var options = {
@@ -50,22 +50,11 @@ class Story {
         if (err) throw err;
         console.log('finished');
       });
-      
-    //   var py = spawn('python', [filePath]);
-    // // // const pyprog2 = spawn('python', ['../gen_backend/final_story.py']);
-    
-    //   py.stdout.on('data', function (data) {
-    //       // var story_content = data;
-    //       // console.log(story_content.toString())
-    //       // var sendfile = {"story": story_content.toString()};
-    //       // res.send(JSON.stringify(sendfile));
-    //       // res.end('end');
-    //   });
-      await onExit(res); // (B)
+      // await onExit(res); // (B)
     
       console.log('### DONE');
     }
-function onExit(res){
+function send_story_file(res){
 
   fs.readFile('../db/output.txt', {encoding: 'utf-8'}, function(err,data){
     if (!err) {
@@ -118,7 +107,8 @@ function get_bookcontent(story, res) {
     // var execSync = require('exec-sync');
     // var user = execSync('python model/run.py');
     // generate_story();
-    generate_story(res);
+    generate_story();
+    send_story_file(res);
     // fs.readFile('../db/output.txt', {encoding: 'utf-8'}, function(err,data){
     //   if (!err) {
     //       console.log('received data: ' + data);
