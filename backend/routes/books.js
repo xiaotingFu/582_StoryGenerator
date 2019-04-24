@@ -40,18 +40,17 @@ class Story {
     async function generate_story(res) {
       const filePath = 'model/run.py';
       console.log('INPUT: '+filePath);
+      var py = spawn('python', [filePath]);
+    // // const pyprog2 = spawn('python', ['../gen_backend/final_story.py']);
     
-      const childProcess = spawn('python', [filePath],
-        {stdio: [process.stdin, process.stdout, process.stderr]}); // (A)
-
-        // childProcess.stdout.on(
-        //   'data',
-        //   (data) => {
-        //     out.push(data.toString());
-        //     logOutput('stdout')(data);
-        //   }
-        // );
-      await onExit(childProcess, res); // (B)
+      py.stdout.on('data', function (data) {
+          // var story_content = data;
+          // console.log(story_content.toString())
+          // var sendfile = {"story": story_content.toString()};
+          // res.send(JSON.stringify(sendfile));
+          // res.end('end');
+      });
+      await onExit(py, res); // (B)
     
       console.log('### DONE');
     }
