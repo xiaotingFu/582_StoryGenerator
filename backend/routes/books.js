@@ -65,17 +65,33 @@ function get_bookcontent(story, res) {
     });
     //a dictionary
     // const { spawn } = require('child_process');
-    var spawn = require('child_process').spawn,
-    py = spawn('python', ['model/run_test.py']);
-    // const pyprog2 = spawn('python', ['../gen_backend/final_story.py']);
-    py.stdout.on('data', function (data) {
-        var story_content = data;
-        console.log(story_content.toString())
-        var sendfile = {"story": story_content.toString()};
-        res.send(JSON.stringify(sendfile));
-        res.end('end');
+    var child = require('child_process').exec('python model/run_test.py')
+    child.stdout.pipe(process.stdout);
+    child.on('exit', function() {
+      process.exit()
     });
-    py.stdin.end();
+
+    fs.readFile('../db/output.txt', {encoding: 'utf-8'}, function(err,data){
+      if (!err) {
+          console.log('received data: ' + data);
+          res.send(JSON.stringify(sendfile));
+          res.end('end');
+      } else {
+          console.log(err);
+      }
+    });
+    // var spawn = require('child_process').spawn,
+    // py = spawn('python', ['model/run_test.py']);
+    // // const pyprog2 = spawn('python', ['../gen_backend/final_story.py']);
+    
+    // py.stdout.on('data', function (data) {
+    //     var story_content = data;
+    //     console.log(story_content.toString())
+    //     var sendfile = {"story": story_content.toString()};
+    //     res.send(JSON.stringify(sendfile));
+    //     res.end('end');
+    // });
+    // py.stdin.end();
   });
 }
 
