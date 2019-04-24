@@ -69,7 +69,7 @@ export default class Setting extends React.Component {
         <FormGroup>
           <Row form>
             <Col md={6}>
-              <Label for="romance">Romance Rating</Label>
+              <Label for="romance">Romance Rating  <img style={{width:"20px"}} src={process.env.PUBLIC_URL+"/images/romance.svg" }/></Label>
               <Input type="select" name="select" id="romance"
                     value={this.state.romance} onChange={this.handleChange("romance")}>
                 <option value={1} label="Lowest"/>
@@ -80,7 +80,7 @@ export default class Setting extends React.Component {
               </Input>
             </Col>
             <Col md={6}>
-              <Label for="horror">Horror Rating</Label>
+              <Label for="horror">Horror Rating <img style={{width:"20px"}} src={process.env.PUBLIC_URL+"/images/horror.svg" }/></Label>
               <Input type="select" name="horror" id="horror"
                     value={this.state.horror} onChange={this.handleChange("horror")}>
                 <option value={1} label="Lowest"/>
@@ -95,7 +95,7 @@ export default class Setting extends React.Component {
         <FormGroup>
           <Row form>
             <Col md={6}>
-              <Label for="cliche">Cliche Rating</Label>
+              <Label for="cliche">Cliche Rating <img style={{width:"20px"}} src={process.env.PUBLIC_URL+"/images/cliche.svg" }/></Label>
               <Input type="select" name="cliche" id="cliche"
                     value={this.state.cliche} onChange={this.handleChange("cliche")}>
                 <option value={1} label="Lowest"/>
@@ -106,7 +106,7 @@ export default class Setting extends React.Component {
               </Input>
             </Col>
             <Col md={6}>
-              <Label for="violence">Violence Rating</Label>
+              <Label for="violence">Violence Rating <img style={{width:"20px"}} src={process.env.PUBLIC_URL+"/images/violence.svg" }/></Label>
               <Input type="select" name="violence" id="violence"
                     value={this.state.violence} onChange={this.handleChange("violence")}>
                 <option value={1} label="Lowest"/>
@@ -121,7 +121,7 @@ export default class Setting extends React.Component {
         <FormGroup>
           <Row form>
             <Col md={6}>
-              <Label for="boring">Boring Rating</Label>
+              <Label for="boring">Boring Rating <img style={{width:"20px"}} src={process.env.PUBLIC_URL+"/images/boring.svg" }/></Label>
               <Input type="select" name="boring" id="boring"
                     value={this.state.boring} onChange={this.handleChange("boring")}>
                 <option value={1} label="Lowest"/>

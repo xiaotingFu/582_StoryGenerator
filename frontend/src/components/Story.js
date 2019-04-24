@@ -1,5 +1,4 @@
 import React from 'react';
-import DecoupledEditor from '@ckeditor/ckeditor5-build-decoupled-document';
 import { Row, Col, Button, Form, FormGroup, Label } from 'reactstrap';
 import 'braft-editor/dist/index.css';
 import BraftEditor from 'braft-editor';
