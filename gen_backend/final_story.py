@@ -301,4 +301,8 @@ add_final_sentences(add_violence_sentence)
 
 with open('../db/output.txt', 'w', encoding='utf-8') as final_story:
     final_story.write(' '.join(paraphrase_summary))
-final_story.close()
+
+with open('../db/output.txt') as f:
+    story = f.read()
+    print(story)
+sys.stdout.flush()
