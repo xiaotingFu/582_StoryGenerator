@@ -41,9 +41,16 @@ class Story {
       const filePath = 'model/run.py';
       console.log('INPUT: '+filePath);
     
-      const childProcess = spawn('python3', [filePath],
+      const childProcess = spawn('python', [filePath],
         {stdio: [process.stdin, process.stdout, process.stderr]}); // (A)
-    
+
+        // childProcess.stdout.on(
+        //   'data',
+        //   (data) => {
+        //     out.push(data.toString());
+        //     logOutput('stdout')(data);
+        //   }
+        // );
       await onExit(childProcess); // (B)
     
       console.log('### DONE');
@@ -74,7 +81,7 @@ function get_bookcontent(story, res) {
         console.error(err);
         return;
       };
-      console.log("JSON file has been created/updated!");
+      console.log("Settings JSON file has been created/updated!");
     });
     //a dictionary
     // const { spawn } = require('child_process');
