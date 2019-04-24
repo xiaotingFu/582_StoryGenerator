@@ -4,11 +4,11 @@ import { Row, Col, Button, Form, FormGroup, Label } from 'reactstrap';
 import 'braft-editor/dist/index.css';
 import BraftEditor from 'braft-editor';
 
-const storyText = `%%SB%% and %%EB%% for start and end of boring sentence.\n
-Similarly, %%SC%% and %%EC%% for start and end of CLICHE sentence.\n
-%%SH%% and %%EH%% for start and end of HORROR sentence.\n
-%%SR%% and %%ER%% for start and end of ROMANCE sentence.\n
-%%SV%% and %%EV%% for start and end of VIOLENCE sentence.\n
+const storyText = `%%SB%% SB and EB for start and end of boring sentence.%%EB%%\n
+Similarly, %%SC%% SC and EC for start and end of CLICHE sentence.%%EC%%\n
+%%SH%% SH and EH for start and end of HORROR sentence.%%EH%%\n
+%%SR%% SR and ER for start and end of ROMANCE sentence.%%ER%%\n
+%%SV%% SV and EV for start and end of VIOLENCE sentence.%%EV%%\n
 Bilbo Baggins walked out of his home of Bag End and into the sunshine. He felt the warmth of the sun trickle down his head and bare feet. The countryside around Bag end was almost empty, so Bilbo decided to take a peaceful walk to a nearby forest. Along the way, he passed by the scowling Sacksville-Bagginses, who always envied Bilbo's luxurious Bag End. Bilbo's mood went down a bit, seeing his cousin Otho Sacksville-Baggins. But Bilbo smiled and said "Good day to you" to his 
 cousins, since Bilbo was quite happy. The Sacksville-Bagginses still looked at him cold when Bilbo was on his way. He walked two kilometres to a nearby forest and sat down next to an oak tree. Bilbo breathed in the fresh air and the calmness of the forest. It was practically empty, save for Bilbo Baggins. He felt sleepy and his eyes started to close. Then he slept. Bilbo Baggins dreamed of his younger self, throwing rocks at small animals, practicing his aim. His aim got so good that whenever an animal saw him just bend to pick up a rock, it ran or flew away as quick as a dragon. Of course, Bilbo didn't just do that. Bilbo Baggins also spent time playing darts, ninepins, bowls, quoits and many other games where a Hobbit could practise his or her aim. And sit down outside and blow smoke rings. Those were among Bilbo's favorite memories. Bilbo awoke the next hour. He felt an urge to pick up a rock and throw it. It increased even more when an unsuspecting deer walked by and stood next to a nearby tree. "That will be a good time to test my skill" Bilbo said to himself. A hand found an egg-sized rock and enclosed it. Bilbo stood up quietly and his eyes went sharp to the deer. The deer was facing the other way. Bilbo wouldn't mess it up now. Bilbo swung his arms as 
 hard as he can and threw the rock. What happens next will change the course of his life. The deer got knocked back from the rock that hit it on the head. Bilbo smiled at his marksmanship. The deer got up and quickly looked at Bilbo. Then an unsuspecting arrow flew out of nowhere and missed the deer by a couple centimetres, landing on the tree behind the deer. The deer turned and ran from the scene as quickly as it can. Bilbo was bewildered from the random arrow attack. But Bilbo didn't see any harm in it as it was the Shire. "Oh, must be some Tooks playing around with arrows" Bilbo said to himself as he went to look at the arrow. It had an iron arrowhead 
