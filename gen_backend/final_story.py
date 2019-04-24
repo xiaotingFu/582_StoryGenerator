@@ -1,5 +1,6 @@
 #!/usr/bin/env python
 import json
+import sys
 from urllib.request import urlopen
 import random
 import chardet
@@ -164,8 +165,8 @@ def perturb_text(doc, use_typos=False, rank_fn=None, heuristic_fn=None, halt_con
     perturbed_positions = set()
     accepted_candidates = []
     perturbed_text = doc.text
-    if verbose:
-        print('Got {} candidates'.format(len(candidates)))
+    # if verbose:
+    #     print('Got {} candidates'.format(len(candidates)))
 
     sorted_candidates = zip(
             map(partial(heuristic_fn, perturbed_text), candidates),
@@ -180,10 +181,10 @@ def perturb_text(doc, use_typos=False, rank_fn=None, heuristic_fn=None, halt_con
         if candidate.token_position not in perturbed_positions:
             perturbed_positions.add(candidate.token_position)
             accepted_candidates.append(candidate)
-            if verbose:
-                print('Candidate:', candidate)
-                print('Candidate score:', heuristic_fn(perturbed_text, candidate))
-                print('Candidate accepted.')
+            # if verbose:
+            #     print('Candidate:', candidate)
+            #     print('Candidate score:', heuristic_fn(perturbed_text, candidate))
+            #     print('Candidate accepted.')
             perturbed_text = ' '.join(
                     _compile_perturbed_tokens(doc, accepted_candidates))
 
@@ -299,10 +300,12 @@ add_final_sentences(add_horror_sentence)
 add_final_sentences(add_romance_sentence)
 add_final_sentences(add_violence_sentence)
 
-with open('../db/output.txt', 'w', encoding='utf-8') as final_story:
-    final_story.write(' '.join(paraphrase_summary))
+# with open('../db/output.txt', 'w', encoding='utf-8') as final_story:
+#     final_story.write(' '.join(paraphrase_summary))
 
-with open('../db/output.txt') as f:
-    story = f.read()
-    print(story)
+# with open('../db/output.txt') as f:
+#     story = f.read()
+#     print(story)
+
+print(' '.join(paraphrase_summary))
 sys.stdout.flush()
