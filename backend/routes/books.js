@@ -65,19 +65,11 @@ function get_bookcontent(story, res) {
     });
     //a dictionary
     const { spawn } = require('child_process');
-    const pyprog = spawn('python', ['mode/run_test.py']);
-    // const pyprog = spawn('python', ['model/run.py']);
+    // const pyprog = spawn('python', ['mode/run_test.py']);
+    const pyprog = spawn('python', ['model/run.py']);
     // const pyprog2 = spawn('python', ['../gen_backend/final_story.py']);
     pyprog.stdout.on('data', function (data) {
-        //console.log(data.toString());
-        // var storyfile = '../db/output.txt';
         var story_content = data;
-        // fs.readFile(storyfile, function read(err, data) {
-        //     if (err) {
-        //         throw err;
-        //     }
-        //     story_content = data;
-        // });
         console.log(story_content.toString())
         var sendfile = {"story": story_content.toString()};
         res.send(JSON.stringify(sendfile));
