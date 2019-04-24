@@ -150,38 +150,40 @@ class Search extends React.Component {
       let paramsArray = [];
       Object.keys(params).forEach(key => paramsArray.push(key + '=' + params[key]))
       if (url.search(/\?/) === -1) {
-          url += '?' + paramsArray.join('&')
+        url += '?' + paramsArray.join('&')
       } else {
-          url += '&' + paramsArray.join('&')
+        url += '&' + paramsArray.join('&')
       }
-      
-      // fetch generated story
-      fetch(url, {
-        method: 'GET',
-        headers: new Headers({
-          'Content-Type': 'application/json',
-        }),
-        mode: 'cors'
-      })
-      .then((resp) => resp.json())
-      .catch((error)=>{console.log(error)})
-      .then((response) => {
-        if (!response) {
-          // alert('Ooops, there is something wrong with your network!');
-          return;
-        }   
-        if(whichNovel==="firstNovel"){     
-          console.log(response);
-          this.setState({
-            secondSelectPlaceholder: "Select second novel",
-            secondOptions: response.map(book => ({
-              value: book,
-              label: book,
-            })),
-            fetchedBooks: this.state.secondOptions,
-          });
-        }
-      });
+
+      if (whichNovel==="firstNovel"){
+        // fetch generated story
+        fetch(url, {
+          method: 'GET',
+          headers: new Headers({
+            'Content-Type': 'application/json',
+          }),
+          mode: 'cors'
+        })
+        .then((resp) => resp.json())
+        .catch((error)=>{console.log(error)})
+        .then((response) => {
+          if (!response) {
+            // alert('Ooops, there is something wrong with your network!');
+            return;
+          }   
+          if(whichNovel==="firstNovel"){     
+            console.log(response);
+            this.setState({
+              secondSelectPlaceholder: "Select second novel",
+              secondOptions: response.map(book => ({
+                value: book,
+                label: book,
+              })),
+              fetchedBooks: this.state.secondOptions,
+            });
+          }
+        });
+      }
           
 
   }
