@@ -15,6 +15,11 @@ Our system has the following components:
 ## Installation Guide
 The following installation guide for MacOS or linux-based system (Ubuntu)
 ```bash
+# install python3.6 if not exist
+
+# install node
+sudo apt install nodejs npm
+
 # Clone the repository
 git clone https://github.com/xiaotingFu/582_StoryGenerator
 

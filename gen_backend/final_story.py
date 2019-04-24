@@ -19,7 +19,7 @@ from pywsd.lesk import simple_lesk as disambiguate
 
 from lexrank import STOPWORDS, LexRank
 
-nlp = spacy.load('en_core_web_lg')
+nlp = spacy.load('en_vectors_web_lg')
 print("function is called")
 # Penn TreeBank POS tags:
 # http://www.ling.upenn.edu/courses/Fall_2003/ling001/penn_treebank_pos.html

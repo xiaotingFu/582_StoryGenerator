@@ -37,7 +37,7 @@ class Story {
      * Save the temp data to a json file
      */
 
-    async function generate_story(res) {
+    async function generate_story() {
       const filePath = 'model/run.py';
       console.log('INPUT: '+filePath);
     
@@ -76,6 +76,7 @@ function get_bookcontent(story, res) {
       console.error(err.message);
     }
     console.log('Close the database connection.');
+
     fs.writeFile("../db/tmp.json", JSON.stringify(story), (err) => {
       if (err) {
         console.error(err);
@@ -92,7 +93,25 @@ function get_bookcontent(story, res) {
     // });
     // var execSync = require('exec-sync');
     // var user = execSync('python model/run.py');
-    generate_story(res);
+    // generate_story();
+    generate_story(query, async function(returnvalue) {
+      const filePath = 'model/run.py';
+      console.log('INPUT: '+filePath);
+    
+      const childProcess = spawn('python', [filePath],
+        {stdio: [process.stdin, process.stdout, process.stderr]}); // (A)
+
+        // childProcess.stdout.on(
+        //   'data',
+        //   (data) => {
+        //     out.push(data.toString());
+        //     logOutput('stdout')(data);
+        //   }
+        // );
+      await onExit(childProcess); // (B)
+    
+      console.log('### DONE');
+    });
     fs.readFile('../db/output.txt', {encoding: 'utf-8'}, function(err,data){
       if (!err) {
           console.log('received data: ' + data);
