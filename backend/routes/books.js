@@ -49,6 +49,7 @@ class Story {
       PythonShell.run(filePath, options, function (err) {
         if (err) throw err;
         console.log('finished');
+        send_story_file(res);
       });
       // await onExit(res); // (B)
     
@@ -108,7 +109,6 @@ function get_bookcontent(story, res) {
     // var user = execSync('python model/run.py');
     // generate_story();
     generate_story();
-    send_story_file(res);
     // fs.readFile('../db/output.txt', {encoding: 'utf-8'}, function(err,data){
     //   if (!err) {
     //       console.log('received data: ' + data);
