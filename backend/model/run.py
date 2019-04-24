@@ -322,12 +322,9 @@ add_final_sentences(add_horror_sentence)
 add_final_sentences(add_romance_sentence)
 add_final_sentences(add_violence_sentence)
 
-# with open('../db/output.txt', 'w', encoding='utf-8') as final_story:
-#     final_story.write(' '.join(paraphrase_summary))
+with open('../db/output.txt', 'w', encoding='utf-8') as final_story:
+    final_story.write(' '.join(paraphrase_summary))
 
-# with open('../db/output.txt') as f:
-#     story = f.read()
-#     print(story)
 
-print(' '.join(paraphrase_summary))
-sys.stdout.flush()
+
+# print(' '.join(paraphrase_summary))
