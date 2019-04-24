@@ -46,7 +46,7 @@ class Story {
         if (err) throw err;
         console.log('finished');
       });
-      PythonShell.getVersionSync(filePath);
+      
     //   var py = spawn('python', [filePath]);
     // // // const pyprog2 = spawn('python', ['../gen_backend/final_story.py']);
     
