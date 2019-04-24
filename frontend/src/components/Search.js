@@ -38,9 +38,6 @@ const styles = theme => ({
 });
 
 class Search extends React.Component {
-  constructor(props) {
-    super(props);
-  }
 
   state = {
     single: null,
@@ -62,16 +59,19 @@ class Search extends React.Component {
     if (value) {
       console.log("not empty");
       this.loadNovelFromServer(name, value.label);
-    }else if(name=="firstNovel"){
+    } else if(name==="firstNovel"){
       console.log("1 is empty");
-      this.state.secondNovel=null;
-      this.state.secondOptions=[];
-      this.state.secondSelectPlaceholder="Select your first novel first";
-    }else if(name=="secondNovel"){
+      this.setState({
+        secondNovel: null,
+        secondOptions: [],
+        secondSelectPlaceholder: "Select your first novel first",
+      });
+    } else if(name==="secondNovel"){
       console.log("2 is empty");
-      this.state.secondOptions = this.state.fetchedBooks;
+      this.setState({
+        secondOptions: this.state.fetchedBooks,
+      })
     }
-      
   }
 
   toggle = () => {
@@ -172,15 +172,16 @@ class Search extends React.Component {
           // alert('Ooops, there is something wrong with your network!');
           return;
         }   
-        if(whichNovel=="firstNovel"){     
+        if(whichNovel==="firstNovel"){     
           console.log(response);
-          
-          this.state.secondSelectPlaceholder="Select second novel";
-          this.state.secondOptions= response.map(book => ({
-            value: book,
-            label: book,
-          }));
-          this.state.fetchedBooks = this.state.secondOptions;
+          this.setState({
+            secondSelectPlaceholder: "Select second novel",
+            secondOptions: response.map(book => ({
+              value: book,
+              label: book,
+            })),
+            fetchedBooks: this.state.secondOptions,
+          });
         }
       });
           
