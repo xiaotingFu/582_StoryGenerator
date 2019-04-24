@@ -14,7 +14,7 @@ class App extends Component {
     super(props);
     this.state = {
       query: "",
-      activeStep: 1,
+      activeStep: 2,
       response: null,
       firstNovel: null,
       secondNovel: null,
