@@ -64,17 +64,18 @@ function get_bookcontent(story, res) {
       console.log("JSON file has been created/updated!");
     });
     //a dictionary
-    const { spawn } = require('child_process');
-    // const pyprog = spawn('python', ['mode/run_test.py']);
-    const pyprog = spawn('python', ['model/run.py']);
+    // const { spawn } = require('child_process');
+    var spawn = require('child_process').spawn,
+    py = spawn('python', ['model/run_test.py']);
     // const pyprog2 = spawn('python', ['../gen_backend/final_story.py']);
-    pyprog.stdout.on('data', function (data) {
+    py.stdout.on('data', function (data) {
         var story_content = data;
         console.log(story_content.toString())
         var sendfile = {"story": story_content.toString()};
         res.send(JSON.stringify(sendfile));
         res.end('end');
     });
+    py.stdin.end();
   });
 }
 
