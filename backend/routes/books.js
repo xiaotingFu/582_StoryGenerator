@@ -38,10 +38,10 @@ class Story {
      */
 
     async function generate_story(res) {
-      const filePath = 'model/run_test.py';
+      const filePath = 'model/run.py';
       console.log('INPUT: '+filePath);
     
-      const childProcess = spawn('python', [filePath],
+      const childProcess = spawn('python3', [filePath],
         {stdio: [process.stdin, process.stdout, process.stderr]}); // (A)
     
       await onExit(childProcess); // (B)
