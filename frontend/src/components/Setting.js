@@ -1,12 +1,8 @@
 import React from 'react';
-import { Row, Col, Button, Form, FormGroup, InputGroup, 
-        InputGroupAddon, Label, Input } from 'reactstrap';
+import { Row, Col, Button, Form, FormGroup, Label, Input } from 'reactstrap';
 import { Config } from '../config';
 
 export default class Setting extends React.Component {
-  constructor(props) {
-    super(props);
-  }
 
   state = {
     romance: "1",
