@@ -40,21 +40,28 @@ class Story {
     async function generate_story(res) {
       const filePath = 'model/run.py';
       console.log('INPUT: '+filePath);
-      var py = spawn('python', [filePath]);
-    // // const pyprog2 = spawn('python', ['../gen_backend/final_story.py']);
-    
-      py.stdout.on('data', function (data) {
-          // var story_content = data;
-          // console.log(story_content.toString())
-          // var sendfile = {"story": story_content.toString()};
-          // res.send(JSON.stringify(sendfile));
-          // res.end('end');
+      import {PythonShell} from 'python-shell';
+
+      PythonShell.run(filePath, null, function (err) {
+        if (err) throw err;
+        console.log('finished');
       });
-      await onExit(py, res); // (B)
+      
+    //   var py = spawn('python', [filePath]);
+    // // // const pyprog2 = spawn('python', ['../gen_backend/final_story.py']);
+    
+    //   py.stdout.on('data', function (data) {
+    //       // var story_content = data;
+    //       // console.log(story_content.toString())
+    //       // var sendfile = {"story": story_content.toString()};
+    //       // res.send(JSON.stringify(sendfile));
+    //       // res.end('end');
+    //   });
+      await onExit(res); // (B)
     
       console.log('### DONE');
     }
-function onExit(process, res){
+function onExit(res){
 
   fs.readFile('../db/output.txt', {encoding: 'utf-8'}, function(err,data){
     if (!err) {
