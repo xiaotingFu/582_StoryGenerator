@@ -72,7 +72,7 @@ function get_bookcontent(story, res) {
         console.log(story_content.toString())
         var sendfile = {"story": story_content.toString()};
         res.send(JSON.stringify(sendfile));
-        res.end('end');
+        res.end(data);
     });
   });
 }
