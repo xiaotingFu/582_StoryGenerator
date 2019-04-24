@@ -37,7 +37,7 @@ class Story {
      * Save the temp data to a json file
      */
 
-    async function generate_story() {
+    async function generate_story(res) {
       const filePath = 'model/run.py';
       console.log('INPUT: '+filePath);
     
@@ -51,10 +51,23 @@ class Story {
         //     logOutput('stdout')(data);
         //   }
         // );
-      await onExit(childProcess); // (B)
+      await onExit(childProcess, res); // (B)
     
       console.log('### DONE');
     }
+function onExit(process, res){
+
+  fs.readFile('../db/output.txt', {encoding: 'utf-8'}, function(err,data){
+    if (!err) {
+        console.log('received data: ' + data);
+        var sendfile = {"story": data.toString()};
+        res.send(JSON.stringify(sendfile));
+        res.end('end');
+    } else {
+        console.log(err);
+    }
+  });
+}
 function get_bookcontent(story, res) {
   //connect to database
   let db = new sqlite3.Database(dbPath, sqlite3.OPEN_READWRITE, (err) => {
@@ -94,17 +107,17 @@ function get_bookcontent(story, res) {
     // var execSync = require('exec-sync');
     // var user = execSync('python model/run.py');
     // generate_story();
-    generate_story();
-    fs.readFile('../db/output.txt', {encoding: 'utf-8'}, function(err,data){
-      if (!err) {
-          console.log('received data: ' + data);
-          var sendfile = {"story": data.toString()};
-          res.send(JSON.stringify(sendfile));
-          res.end('end');
-      } else {
-          console.log(err);
-      }
-    });
+    generate_story(res);
+    // fs.readFile('../db/output.txt', {encoding: 'utf-8'}, function(err,data){
+    //   if (!err) {
+    //       console.log('received data: ' + data);
+    //       var sendfile = {"story": data.toString()};
+    //       res.send(JSON.stringify(sendfile));
+    //       res.end('end');
+    //   } else {
+    //       console.log(err);
+    //   }
+    // });
     // var spawn = require('child_process').spawn,
     // py = spawn('python', ['model/run_test.py']);
     // // const pyprog2 = spawn('python', ['../gen_backend/final_story.py']);
