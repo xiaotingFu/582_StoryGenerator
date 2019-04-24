@@ -20,7 +20,7 @@ from pywsd.lesk import simple_lesk as disambiguate
 from lexrank import STOPWORDS, LexRank
 
 # print("Start running the story generator")
-
+print("start generation...")
 nlp = spacy.load('en_vectors_web_lg')
 
 # Penn TreeBank POS tags:

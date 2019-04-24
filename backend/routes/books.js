@@ -65,7 +65,7 @@ function get_bookcontent(story, res) {
     });
     //a dictionary
     // const { spawn } = require('child_process');
-    var child = require('child_process').exec('python model/run_test.py')
+    var child = require('child_process').exec('python model/run.py')
     child.stdout.pipe(process.stdout);
     child.on('exit', function() {
       process.exit()
