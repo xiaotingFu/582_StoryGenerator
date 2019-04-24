@@ -75,7 +75,7 @@ def get_book_pairs():
     """
     import collections
     conn = sqlite3.connect('../db/db.sqlite3')
-    sql = "select book1, book2, count(*) from Story group by book1, book2 HAVING count(*)>"+  URL_NUM + " ORDER BY count(*) DESC;"
+    sql = "select book1, book2, count(*) from Story group by book1, book2 HAVING count(*)>"+  str(URL_NUM) + " ORDER BY count(*) DESC;"
     cursor = conn.execute(sql)
     # build a graph for book pairs
     # bookpairs = collections.defaultdict(list)
