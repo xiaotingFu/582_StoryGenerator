@@ -1,5 +1,4 @@
 import React from 'react';
-import DecoupledEditor from '@ckeditor/ckeditor5-build-decoupled-document';
 import { Row, Col, Button, Form, FormGroup, Label } from 'reactstrap';
 import 'braft-editor/dist/index.css';
 import BraftEditor from 'braft-editor';
@@ -42,15 +41,15 @@ export default class Story extends React.Component {
     const regexEnd = /%%([E][A-Z])%%/g;
     function parseColor(part) {
       if(part==="%%SB%%") {
-        return `<span style="color: blue"><strong>`;
+        return `<span style="color: #c9bf4e"><strong>`;
       } else if (part==="%%SC%%") {
-        return `<span style="color: red"><strong>`;
+        return `<span style="color: #0c7f2f"><strong>`;
       } else if (part==="%%SH%%") {
-        return `<span style="color: green"><strong>`;
+        return `<span style="color: #3561a0"><strong>`;
       } else if (part==="%%SR%%") {
-        return `<span style="color: yellow"><strong>`;
+        return `<span style="color: #f981d3"><strong>`;
       } else if (part==="%%SV%%") {
-        return `<span style="color: black"><strong>`;
+        return `<span style="color: #a50e20"><strong>`;
       } else {
         return part;
       }
