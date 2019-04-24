@@ -1,6 +1,8 @@
+#!/usr/bin/env python
 import json
 from urllib.request import urlopen
 import random
+import chardet
 
 import attr
 import nltk
@@ -9,7 +11,6 @@ import re
 
 from collections import OrderedDict
 from functools import partial
-
 from nltk.tokenize import word_tokenize
 from nltk.tag import pos_tag
 from nltk.corpus import wordnet as wn
@@ -17,9 +18,7 @@ from pywsd.lesk import simple_lesk as disambiguate
 
 from lexrank import STOPWORDS, LexRank
 
-
 nlp = spacy.load('en_vectors_web_lg')
-
 
 # Penn TreeBank POS tags:
 # http://www.ling.upenn.edu/courses/Fall_2003/ling001/penn_treebank_pos.html
@@ -210,14 +209,10 @@ def print_paraphrase(text):
 
 
 def get_filler_sentences(path):
-    fillers = open(path, 'r')
+    fillers = open(path, "r", encoding='utf-8')
     filler_sentences = fillers.readlines()
     return filler_sentences
 
-
-# story = open('../db/output.txt', 'r')
-# story_data = story.readlines()
-# story.close()
 
 with open('../db/tmp.json') as json_file:
     data = json.load(json_file)
@@ -304,6 +299,6 @@ add_final_sentences(add_horror_sentence)
 add_final_sentences(add_romance_sentence)
 add_final_sentences(add_violence_sentence)
 
-with open('../db/output.txt', 'w') as final_story:
+with open('../db/output.txt', 'w', encoding='utf-8') as final_story:
     final_story.write(' '.join(paraphrase_summary))
 final_story.close()
