@@ -307,4 +307,4 @@ add_final_sentences(add_violence_sentence)
 #     print(story)
 
 print(' '.join(paraphrase_summary))
-sys.stdout.flush()
+# sys.stdout.flush()
