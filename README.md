@@ -2,7 +2,7 @@
 
 This is CYOS group, we have created a crossover fan-fiction generator using a Web-Crawler, a textrank algorithm, and NLP techniques using the Stanford NLTK Library.
 
-To see the running version of our application please go thi link -: http://34.73.85.215/
+To see the running version of our application please go this link -: http://34.73.85.215:3000
 
 ## Defintion of Crossover fan-fiction
 Crossover fan-fiction is something a fan for both book1 and book2 want to write a story where 
