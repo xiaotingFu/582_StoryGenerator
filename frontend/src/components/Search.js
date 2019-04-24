@@ -17,10 +17,6 @@ const suggestions = books.map(book => ({
   label: book.title,
 }));
 
-// suggestions.forEach((suggestion)=>{
-//   suggestion.value
-// })
-
 const styles = theme => ({
   icon: {
     margin: theme.spacing.unit,
@@ -133,7 +129,9 @@ class Search extends React.Component {
             description: book.volumeInfo.description?
                         book.volumeInfo.description:
                         "No description available",
-            imgLink: book.volumeInfo.imageLinks.thumbnail,
+            imgLink: book.volumeInfo.imageLinks?
+                    book.volumeInfo.imageLinks.thumbnail:
+                    "https://placeholdit.imgix.net/~text?txtsize=33&txt=318%C3%97180&w=318&h=180",
           }});
         });
       })
