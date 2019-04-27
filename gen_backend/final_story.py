@@ -244,61 +244,66 @@ num_horror = (((int(horror_rating)/5)*50)/100) * len(boring_sentences)
 num_romance = (((int(romance_rating)/5)*50)/100) * len(boring_sentences)
 num_violence = (((int(violence_rating)/5)*50)/100) * len(boring_sentences)
 
-
-lxr = LexRank(paraphrase_summary, stopwords=STOPWORDS['en'])
-boring_scores_cont = lxr.rank_sentences(boring_sentences, threshold=None, fast_power_method=True)
-cliche_scores_cont = lxr.rank_sentences(cliche_sentences, threshold=None, fast_power_method=True)
-horror_scores_cont = lxr.rank_sentences(horror_sentences, threshold=None, fast_power_method=True)
-romance_scores_cont = lxr.rank_sentences(romance_sentences, threshold=None, fast_power_method=True)
-violence_scores_cont = lxr.rank_sentences(violence_sentences, threshold=None, fast_power_method=True)
-
-
-boring_index = sorted(range(len(boring_scores_cont)), key=lambda i: boring_scores_cont[i])[-int(num_boring):]
-cliche_index = sorted(range(len(cliche_scores_cont)), key=lambda i: cliche_scores_cont[i])[-int(num_cliche):]
-horror_index = sorted(range(len(horror_scores_cont)), key=lambda i: horror_scores_cont[i])[-int(num_horror):]
-romance_index = sorted(range(len(romance_scores_cont)), key=lambda i: romance_scores_cont[i])[-int(num_romance):]
-violence_index = sorted(range(len(violence_scores_cont)), key=lambda i: violence_scores_cont[i])[-int(num_violence):]
-
-add_boring_sentence = []
-add_cliche_sentence = []
-add_horror_sentence = []
-add_romance_sentence = []
-add_violence_sentence = []
+try:
+    lxr = LexRank(paraphrase_summary, stopwords=STOPWORDS['en'])
+    boring_scores_cont = lxr.rank_sentences(boring_sentences, threshold=None, fast_power_method=True)
+    cliche_scores_cont = lxr.rank_sentences(cliche_sentences, threshold=None, fast_power_method=True)
+    horror_scores_cont = lxr.rank_sentences(horror_sentences, threshold=None, fast_power_method=True)
+    romance_scores_cont = lxr.rank_sentences(romance_sentences, threshold=None, fast_power_method=True)
+    violence_scores_cont = lxr.rank_sentences(violence_sentences, threshold=None, fast_power_method=True)
 
 
-def prepare_sentences(list_of_sentence, index, sentence_type):
-    for value in index:
-        if sentence_type == 'boring':
-            add_boring_sentence.append("%%SB%%"+str(list_of_sentence[value].rstrip())+"%%EB%%")
-        elif sentence_type == 'cliche':
-            add_cliche_sentence.append("%%SC%%"+str(list_of_sentence[value].rstrip())+"%%EC%%")
-        elif sentence_type == 'horror':
-            add_horror_sentence.append("%%SH%%"+str(list_of_sentence[value].rstrip())+"%%EH%%")
-        elif sentence_type == 'romance':
-            add_romance_sentence.append("%%SR%%"+str(list_of_sentence[value].rstrip())+"%%ER%%")
-        elif sentence_type == 'violence':
-            add_violence_sentence.append("%%SV%%"+str(list_of_sentence[value].rstrip())+"%%EV%%")
+    boring_index = sorted(range(len(boring_scores_cont)), key=lambda i: boring_scores_cont[i])[-int(num_boring):]
+    cliche_index = sorted(range(len(cliche_scores_cont)), key=lambda i: cliche_scores_cont[i])[-int(num_cliche):]
+    horror_index = sorted(range(len(horror_scores_cont)), key=lambda i: horror_scores_cont[i])[-int(num_horror):]
+    romance_index = sorted(range(len(romance_scores_cont)), key=lambda i: romance_scores_cont[i])[-int(num_romance):]
+    violence_index = sorted(range(len(violence_scores_cont)), key=lambda i: violence_scores_cont[i])[-int(num_violence):]
+
+    add_boring_sentence = []
+    add_cliche_sentence = []
+    add_horror_sentence = []
+    add_romance_sentence = []
+    add_violence_sentence = []
 
 
-prepare_sentences(boring_sentences, boring_index, 'boring')
-prepare_sentences(cliche_sentences, cliche_index, 'cliche')
-prepare_sentences(horror_sentences, horror_index, 'horror')
-prepare_sentences(romance_sentences, romance_index, 'romance')
-prepare_sentences(violence_sentences, violence_index, 'violence')
+    def prepare_sentences(list_of_sentence, index, sentence_type):
+        for value in index:
+            if sentence_type == 'boring':
+                add_boring_sentence.append("%%SB%%"+str(list_of_sentence[value].rstrip())+"%%EB%%")
+            elif sentence_type == 'cliche':
+                add_cliche_sentence.append("%%SC%%"+str(list_of_sentence[value].rstrip())+"%%EC%%")
+            elif sentence_type == 'horror':
+                add_horror_sentence.append("%%SH%%"+str(list_of_sentence[value].rstrip())+"%%EH%%")
+            elif sentence_type == 'romance':
+                add_romance_sentence.append("%%SR%%"+str(list_of_sentence[value].rstrip())+"%%ER%%")
+            elif sentence_type == 'violence':
+                add_violence_sentence.append("%%SV%%"+str(list_of_sentence[value].rstrip())+"%%EV%%")
 
 
-def add_final_sentences(sentence_list):
-    summary_length = len(paraphrase_summary)
-    for i in range(len(sentence_list)):
-        paraphrase_summary.insert(random.randint(0, summary_length), sentence_list[i])
+    prepare_sentences(boring_sentences, boring_index, 'boring')
+    prepare_sentences(cliche_sentences, cliche_index, 'cliche')
+    prepare_sentences(horror_sentences, horror_index, 'horror')
+    prepare_sentences(romance_sentences, romance_index, 'romance')
+    prepare_sentences(violence_sentences, violence_index, 'violence')
 
 
-add_final_sentences(add_boring_sentence)
-add_final_sentences(add_cliche_sentence)
-add_final_sentences(add_horror_sentence)
-add_final_sentences(add_romance_sentence)
-add_final_sentences(add_violence_sentence)
+    def add_final_sentences(sentence_list):
+        summary_length = len(paraphrase_summary)
+        for i in range(len(sentence_list)):
+            paraphrase_summary.insert(random.randint(0, summary_length), sentence_list[i])
 
-with open('../db/output.txt', 'w', encoding='utf-8') as final_story:
-    final_story.write(' '.join(paraphrase_summary))
-final_story.close()
+
+    add_final_sentences(add_boring_sentence)
+    add_final_sentences(add_cliche_sentence)
+    add_final_sentences(add_horror_sentence)
+    add_final_sentences(add_romance_sentence)
+    add_final_sentences(add_violence_sentence)
+
+    with open('../db/output.txt', 'w', encoding='utf-8') as final_story:
+        final_story.write(' '.join(paraphrase_summary))
+    final_story.close()
+
+except ValueError:
+    with open('../db/output.txt', 'w', encoding='utf-8') as final_story:
+        final_story.write(' '.join(paraphrase_summary))
+    final_story.close()
