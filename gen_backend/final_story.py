@@ -1,5 +1,6 @@
 #!/usr/bin/env python
 import json
+import sys
 from urllib.request import urlopen
 import random
 import chardet
@@ -19,7 +20,7 @@ from pywsd.lesk import simple_lesk as disambiguate
 from lexrank import STOPWORDS, LexRank
 
 nlp = spacy.load('en_vectors_web_lg')
-
+print("function is called")
 # Penn TreeBank POS tags:
 # http://www.ling.upenn.edu/courses/Fall_2003/ling001/penn_treebank_pos.html
 supported_pos_tags = [
@@ -164,8 +165,8 @@ def perturb_text(doc, use_typos=False, rank_fn=None, heuristic_fn=None, halt_con
     perturbed_positions = set()
     accepted_candidates = []
     perturbed_text = doc.text
-    if verbose:
-        print('Got {} candidates'.format(len(candidates)))
+    # if verbose:
+    #     print('Got {} candidates'.format(len(candidates)))
 
     sorted_candidates = zip(
             map(partial(heuristic_fn, perturbed_text), candidates),
@@ -180,10 +181,10 @@ def perturb_text(doc, use_typos=False, rank_fn=None, heuristic_fn=None, halt_con
         if candidate.token_position not in perturbed_positions:
             perturbed_positions.add(candidate.token_position)
             accepted_candidates.append(candidate)
-            if verbose:
-                print('Candidate:', candidate)
-                print('Candidate score:', heuristic_fn(perturbed_text, candidate))
-                print('Candidate accepted.')
+            # if verbose:
+            #     print('Candidate:', candidate)
+            #     print('Candidate score:', heuristic_fn(perturbed_text, candidate))
+            #     print('Candidate accepted.')
             perturbed_text = ' '.join(
                     _compile_perturbed_tokens(doc, accepted_candidates))
 

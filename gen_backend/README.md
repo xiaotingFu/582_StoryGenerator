@@ -4,6 +4,7 @@ The Web Crawler use Python BeautifulSoup4 libary to extract fanfictions.
 
 ## Google cloud Setup
 ```
+python -m spacy download en_vectors_web_lg
 export GOOGLE_APPLICATION_CREDENTIALS=""
 ```
 

@@ -4,6 +4,8 @@ var router = express.Router();
 const path = require('path');
 const dbPath = path.resolve(__dirname, '../../db/db.sqlite3');
 var fs = require("fs");
+const {spawn} = require('child_process');
+const {PythonShell}= require('python-shell');
 /**
  * Test POST
 book1:Harry Potter
@@ -35,6 +37,38 @@ class Story {
      * Get the story url and send the data to the generator
      * Save the temp data to a json file
      */
+
+    async function generate_story(res) {
+      const filePath = 'model/run.py';
+      console.log('INPUT: '+filePath);
+      var options = {
+        mode: 'text',
+        pythonPath: '/home/xiaot_fu/anaconda3/bin/python3',
+        scriptPath: '.'
+      };
+      PythonShell.run(filePath, options, function (err) {
+        if (err) throw err;
+        console.log('finished');
+        send_story_file(res);
+      });
+      // await onExit(res); // (B)
+    
+      console.log('### DONE');
+    }
+function send_story_file(res){
+
+  fs.readFile('../db/output.txt', {encoding: 'utf-8'}, function(err,data){
+    if (!err) {
+        // console.log('received data: ' + data);
+        console.log("data received");
+        var sendfile = {"story": data.toString()};
+        res.send(JSON.stringify(sendfile));
+        res.end('end');
+    } else {
+        console.log(err);
+    }
+  });
+}
 function get_bookcontent(story, res) {
   //connect to database
   let db = new sqlite3.Database(dbPath, sqlite3.OPEN_READWRITE, (err) => {
@@ -56,33 +90,47 @@ function get_bookcontent(story, res) {
       console.error(err.message);
     }
     console.log('Close the database connection.');
+
     fs.writeFile("../db/tmp.json", JSON.stringify(story), (err) => {
       if (err) {
         console.error(err);
         return;
       };
-      console.log("JSON file has been created/updated!");
+      console.log("Settings JSON file has been created/updated!");
     });
     //a dictionary
-    const { spawn } = require('child_process');
-    // const pyprog = spawn('python', ['../gen_backend/story_preprocess.py']);
-    const pyprog = spawn('python', ['model/run.py']);
-    pyprog.stdout.on('data', function (data) {
-        //console.log(data.toString());
-        // var storyfile = '../db/output.txt';
-        var story_content = data;
-        // First I want to read the file
-        // fs.readFile(storyfile, function read(err, data) {
-        //     if (err) {
-        //         throw err;
-        //     }
-        //     story_content = data;
-        // });
-        console.log(story_content.toString())
-        var sendfile = {"story": story_content.toString()};
-        res.send(JSON.stringify(sendfile));
-        res.end('end');
-    });
+    // const { spawn } = require('child_process');
+    // var child = require('child_process').exec('python model/run.py')
+    // child.stdout.pipe(process.stdout);
+    // child.on('exit', function() {
+    //   process.exit()
+    // });
+    // var execSync = require('exec-sync');
+    // var user = execSync('python model/run.py');
+    // generate_story();
+    generate_story(res);
+    // fs.readFile('../db/output.txt', {encoding: 'utf-8'}, function(err,data){
+    //   if (!err) {
+    //       console.log('received data: ' + data);
+    //       var sendfile = {"story": data.toString()};
+    //       res.send(JSON.stringify(sendfile));
+    //       res.end('end');
+    //   } else {
+    //       console.log(err);
+    //   }
+    // });
+    // var spawn = require('child_process').spawn,
+    // py = spawn('python', ['model/run_test.py']);
+    // // const pyprog2 = spawn('python', ['../gen_backend/final_story.py']);
+    
+    // py.stdout.on('data', function (data) {
+    //     var story_content = data;
+    //     console.log(story_content.toString())
+    //     var sendfile = {"story": story_content.toString()};
+    //     res.send(JSON.stringify(sendfile));
+    //     res.end('end');
+    // });
+    // py.stdin.end();
   });
 }
 
