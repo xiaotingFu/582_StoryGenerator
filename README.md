@@ -2,7 +2,7 @@
 
 This is CYOS group, we have created a crossover fan-fiction generator using a Web-Crawler, a textrank algorithm, and NLP techniques using the Stanford NLTK Library.
 
-To see the running version of our application please go this link -: http://34.73.85.215:3000
+To see the running version of our application please go this link -: http://xiaotingfu.com
 
 ## Defintion of Crossover fan-fiction
 Crossover fan-fiction is something a fan for both book1 and book2 want to write a story where 
@@ -40,17 +40,14 @@ source venv/bin/activate
 pip install -r "requirements.txt"
 python gen_backend/init.py
 
-# Deploy story_generator
-
-
 # Deploy the system backend
 cd backend
 
 # install dependencies for node
 npm install
 
-# start backend server
-npm start
+# start backend server, restart with crash
+sudo forever --sourceDir [path_to_backend] -c "npm start" ./
 
 # start frontend server
 cd frontend
