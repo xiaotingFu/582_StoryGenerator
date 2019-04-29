@@ -233,11 +233,11 @@ for sentence in story_data:
     paraphrase_sentence = print_paraphrase(sentence)
     paraphrase_summary.append(paraphrase_sentence)
 
-boring_sentences = get_filler_sentences('backend/boring_sentences.txt')
-cliche_sentences = get_filler_sentences('backend/cliche_sentences.txt')
-horror_sentences = get_filler_sentences('backend/horror_sentences.txt')
-romance_sentences = get_filler_sentences('backend/romance_sentences.txt')
-violence_sentences = get_filler_sentences('backend/violence_sentences.txt')
+boring_sentences = get_filler_sentences('../gen_backend/backend/boring_sentences.txt')
+cliche_sentences = get_filler_sentences('../gen_backend/backend/cliche_sentences.txt')
+horror_sentences = get_filler_sentences('../gen_backend/backend/horror_sentences.txt')
+romance_sentences = get_filler_sentences('../gen_backend/backend/romance_sentences.txt')
+violence_sentences = get_filler_sentences('../gen_backend/backend/violence_sentences.txt')
 
 num_boring = (((int(boring_rating)/5)*50)/100) * len(boring_sentences)
 num_cliche = (((int(cliche_rating)/5)*50)/100) * len(boring_sentences)
