@@ -19,7 +19,7 @@
     "react": "^16.6.3",
     "react-dom": "^16.6.3",
     "react-pdf": "^4.0.5",
-    "react-scripts": "^2.1.8",
+    "react-scripts": "^5.0.1",
     "react-select": "^2.4.2",
     "reactstrap": "^6.5.0",
     "typescript": "^3.4.1"
